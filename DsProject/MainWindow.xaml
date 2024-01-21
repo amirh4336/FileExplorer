@@ -31,7 +31,7 @@
             </Grid.RowDefinitions>
             <TextBlock Text="FileExplorer" FontFamily="/Fonts/#Poppins" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="22, 0 , 0 ,0" Foreground="White" FontSize="22" />
 
-            <StackPanel Grid.Row="1">
+            <StackPanel x:Name="dynamicVolumes" Grid.Row="1">
                 <RadioButton Content="Home" Height="50" Foreground="white" FontSize="14" IsChecked="True" Style="{StaticResource MenuButtomTheme}" Command="{Binding HomeViewCommand}" />
                 <RadioButton Content="Discovery" Height="50" Foreground="white" FontSize="14" Style="{StaticResource MenuButtomTheme}" Command="{Binding DiscoveryViewCommand}" />
                 <RadioButton Content="Featured" Height="50" Foreground="white" FontSize="14" Style="{StaticResource MenuButtomTheme}" />

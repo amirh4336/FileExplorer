@@ -29,9 +29,12 @@ namespace DsProject.MWM.View
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(Window_Loaded);
         }
+        public string  path { get; set; }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (path == null)
+            {
             foreach (string s in Directory.GetLogicalDrives())
             {
                 TreeViewItem item = new TreeViewItem();
@@ -40,7 +43,20 @@ namespace DsProject.MWM.View
                 item.FontWeight = FontWeights.Normal;
                 item.Items.Add(dummyNode);
                 item.Expanded += new RoutedEventHandler(folder_Expanded);
+                //item.CommandBindings(CommandBindings.);
                 foldersItem.Items.Add(item);
+            }
+            }else 
+            {
+                foreach (var item in Directory.GetDirectories(path))
+                {
+                    TreeViewItem item2 = new TreeViewItem();
+                    item2.Header = item;
+                    item2.Tag = item;
+                    item2.FontWeight = FontWeights.Normal;
+                    item2.Items.Add(dummyNode);
+                    item2.Expanded += new RoutedEventHandler(folder_Expanded);
+                }
             }
         }
         private void foldersItem_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
