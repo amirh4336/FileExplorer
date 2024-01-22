@@ -26,6 +26,8 @@ namespace DsProject.MWM.ViewModel
 
         public DiscoveryViewModel DiscoveryVM { get; set; }
 
+        
+
 
         private object _currentView;
 

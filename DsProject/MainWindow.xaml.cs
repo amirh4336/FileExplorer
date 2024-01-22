@@ -1,5 +1,8 @@
-﻿using DsProject.MWM.View;
+﻿using DsProject.Core;
+using DsProject.MWM.View;
+using DsProject.MWM.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -50,10 +53,9 @@ namespace DsProject
 
             // for showing Modal
             OpenModal();
+            MainViewModel mainViewModel = new MainViewModel();
+            Dictionary<string, RelayCommand> driveCommands = mainViewModel.DriveCommands;
 
-            string[] array = Directory.GetDirectories("D:/");
-            DiscoveryView disc = new DiscoveryView();
-            //var driveCommands = MainViewModel.DriveCommands;
             foreach (string s in Directory.GetLogicalDrives())
             {
 
@@ -62,16 +64,11 @@ namespace DsProject
                 rb.Height = 50;
                 rb.Foreground = new SolidColorBrush(Colors.White);
                 rb.FontSize = 14;
-                // Replace this with your actual RadioButton style
                 rb.Style = (Style)FindResource("MenuButtomTheme");
-                if (rb.IsPressed)
+                if (driveCommands.ContainsKey(s))
                 {
-                    disc.path = s;
+                    rb.Command = driveCommands[s];
                 }
-                //if (driveCommands.ContainsKey(s))
-                //{
-                //    rb.Command = driveCommands[s];
-                //}
                 dynamicVolumes.Children.Add(rb);
             }
         }
