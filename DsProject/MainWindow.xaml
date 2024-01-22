@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModel="clr-namespace:DsProject.MWM.ViewModel"
+        xmlns:userControls="clr-namespace:DsProject.MWM.View"
         xmlns:local="clr-namespace:DsProject"
         mc:Ignorable="d"
         Height="600" Width="920"
@@ -13,10 +14,34 @@
         WindowStyle="None"
         AllowsTransparency="True"
         >
+    <Window.Resources>
+        <Style TargetType="Button" >
+            <Setter Property="Background" Value="#222222" />
+            <Setter Property="Foreground" Value="#EEEEEE" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"  />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True" >
+                    <Setter Property="Background" Value="#0042C1" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True" >
+                    <Setter Property="Background" Value="Green" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <viewModel:MainViewModel />
-    </Window.DataContext>
+    </Window.DataContext>-->
+
 
     <Border Background="#272537" CornerRadius="20">
 
@@ -33,17 +58,22 @@
             <TextBlock Text="FileExplorer" FontFamily="/Fonts/#Poppins" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="22, 0 , 0 ,0" Foreground="White" FontSize="22" />
 
             <StackPanel x:Name="dynamicVolumes" Grid.Row="1">
-                <RadioButton Content="Home" Height="50" Foreground="white" FontSize="14" IsChecked="True" Style="{StaticResource MenuButtomTheme}" Command="{Binding HomeViewCommand}" />
+                <!--<RadioButton Content="Home" Height="50" Foreground="white" FontSize="14" IsChecked="True" Style="{StaticResource MenuButtomTheme}" Command="{Binding HomeViewCommand}" />
                 <RadioButton Content="Discovery" Height="50" Foreground="white" FontSize="14" Style="{StaticResource MenuButtomTheme}" Command="{Binding DiscoveryViewCommand}" />
-                <RadioButton Content="Featured" Height="50" Foreground="white" FontSize="14" Style="{StaticResource MenuButtomTheme}" />
+                <RadioButton Content="Featured" Height="50" Foreground="white" FontSize="14" Style="{StaticResource MenuButtomTheme}" />-->
             </StackPanel>
             <StackPanel Grid.Column="1"  VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Right">
                 <TextBox x:Name="txtSearch"  Width="250" Height="40" VerticalContentAlignment="Center" Margin="5" HorizontalAlignment="Left"  Style="{StaticResource ModernTextbox}" />
-                <Button x:Name="btnClose" Content="X" Width="32" Height="26" Margin="5" VerticalAlignment="Top" BorderBrush="Transparent" Background="Transparent" Foreground="White" Click="btnClose_Click" />
+                <!--Background="Transparent" Foreground="White"-->
+                <Button x:Name="btnClose"  Content="X" Width="32" Height="26" Margin="5" VerticalAlignment="Top" BorderBrush="Transparent" 
+                         Click="btnClose_Click" />
             </StackPanel>
-            <ContentControl Grid.Row="1"
+            <!--<ContentControl x:Name="MainContent" Grid.Row="1"
                             Grid.Column="1"
-                            Margin="10" Content="{Binding CurrentView}"/>
+                            Margin="10" />-->
+            <ContentControl x:Name="mainContent" Grid.Row="1"
+                            Grid.Column="1" Margin="10" >
+            </ContentControl>
         </Grid>
 
 

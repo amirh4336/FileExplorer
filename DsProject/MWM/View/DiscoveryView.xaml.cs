@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,44 +21,45 @@ namespace DsProject.MWM.View
     /// <summary>
     /// Interaction logic for DiscoveryView.xaml
     /// </summary>
-    public partial class DiscoveryView : UserControl
+    public partial class DiscoveryView : UserControl , INotifyPropertyChanged
     {
 
         private object dummyNode = null;
+        private string path;
+        public string Path
+        {
+            get { return path; }
+            set { path = value; OnPropertyChanged();
+                ListEntries.Items.Clear();
+                LabelHandler();
+            }
+        }
 
         public DiscoveryView()
         {
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(Window_Loaded);
         }
-        public string  path { get; set; }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            
             if (path == null)
             {
-            foreach (string s in Directory.GetLogicalDrives())
-            {
-                TreeViewItem item = new TreeViewItem();
-                item.Header = s;
-                item.Tag = s;
-                item.FontWeight = FontWeights.Normal;
-                item.Items.Add(dummyNode);
-                item.Expanded += new RoutedEventHandler(folder_Expanded);
-                //item.CommandBindings(CommandBindings.);
-                foldersItem.Items.Add(item);
-            }
-            }else 
-            {
-                foreach (var item in Directory.GetDirectories(path))
+                foreach (string s in Directory.GetDirectories("C://"))
                 {
-                    TreeViewItem item2 = new TreeViewItem();
-                    item2.Header = item;
-                    item2.Tag = item;
-                    item2.FontWeight = FontWeights.Normal;
-                    item2.Items.Add(dummyNode);
-                    item2.Expanded += new RoutedEventHandler(folder_Expanded);
+                    Label item = new Label();
+                    item.Content = s;
+                    item.Tag = s;
+                    item.FontWeight = FontWeights.Normal;
+                    item.Foreground = Brushes.White;
+                    item.MouseDoubleClick += Label_MouseDoubleClick;
+                    ListEntries.Items.Add(item);
                 }
+            }
+            else
+            {
+                LabelHandler();
             }
         }
         private void foldersItem_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -86,6 +89,39 @@ namespace DsProject.MWM.View
                     }
                 }
                 catch (Exception) { }
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+
+        private void LabelHandler ()
+        {
+            foreach (var s in Directory.GetDirectories(path))
+            {
+                Label item = new Label();
+                item.Content = s;
+                item.Tag = s;
+                item.FontWeight = FontWeights.Normal;
+                item.Foreground = Brushes.White;
+                item.MouseDoubleClick += Label_MouseDoubleClick;
+                ListEntries.Items.Add(item);
+            }
+        }
+
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Label lbl = sender as Label;
+            if (lbl != null)
+            {
+                Path = lbl.Content.ToString();
+
             }
         }
     }

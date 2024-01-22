@@ -42,9 +42,15 @@ namespace DsProject
         private object dummyNode = null;
 
 
+
+
+        //MainViewModel mainViewModel = new MainViewModel();
+        DiscoveryView discoveryView = new DiscoveryView();
         public MainWindow()
         {
+
             InitializeComponent();
+            mainContent.Content = discoveryView;
             this.Loaded += new RoutedEventHandler(Window_Loaded);
 
         }
@@ -53,8 +59,8 @@ namespace DsProject
 
             // for showing Modal
             OpenModal();
-            MainViewModel mainViewModel = new MainViewModel();
-            Dictionary<string, RelayCommand> driveCommands = mainViewModel.DriveCommands;
+            
+            //Dictionary<string, RelayCommand> driveCommands = mainViewModel.DriveCommands;
 
             foreach (string s in Directory.GetLogicalDrives())
             {
@@ -65,10 +71,14 @@ namespace DsProject
                 rb.Foreground = new SolidColorBrush(Colors.White);
                 rb.FontSize = 14;
                 rb.Style = (Style)FindResource("MenuButtomTheme");
-                if (driveCommands.ContainsKey(s))
+                //if (driveCommands.ContainsKey(s))
+                //{
+                //    rb.Command = driveCommands[s];
+                //}
+                rb.Click += (sender, e) =>
                 {
-                    rb.Command = driveCommands[s];
-                }
+                    discoveryView.Path = s;
+                };
                 dynamicVolumes.Children.Add(rb);
             }
         }

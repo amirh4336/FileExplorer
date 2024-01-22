@@ -1,4 +1,5 @@
 ﻿using DsProject.Core;
+using DsProject.MWM.View;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,10 +40,14 @@ namespace DsProject.MWM.ViewModel
             }
         }
 
+        
+
 
         public MainViewModel() { 
             HomeVM = new HomeViewModel();
             DiscoveryVM = new DiscoveryViewModel() ;
+                    DiscoveryView discoveryView = new DiscoveryView();
+            
             CurrentView = HomeVM;
 
             HomeViewCommand = new RelayCommand(o =>
@@ -52,7 +57,7 @@ namespace DsProject.MWM.ViewModel
 
             DiscoveryViewCommand = new RelayCommand(o =>
             {
-                CurrentView = DiscoveryVM;
+                CurrentView = discoveryView;
             });
 
             DriveCommands = new Dictionary<string, RelayCommand>();
@@ -62,7 +67,12 @@ namespace DsProject.MWM.ViewModel
                 DriveCommands[s] = new RelayCommand(o =>
                 {
                     // Replace this with the code that should be executed when the RadioButton is clicked
-                    MessageBox.Show($"You clicked {s}");
+                    //DiscoveryVM = new DiscoveryViewModel(s);
+                    //DiscoveryView discoveryView = new DiscoveryView();
+                    //discoveryView.Path = s;
+                    //CurrentView = discoveryView;
+                    CurrentView = new DiscoveryView();
+                    MessageBox.Show($"You clicked {discoveryView.Path}");
                 });
             }
 

@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:DsProject.MWM.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             Background="#1B1B1B">
-    <Grid>
-        <TreeView x:Name="foldersItem"
+             >
+    <Grid  >
+        <!--<TreeView x:Name="foldersItem"
           SelectedItemChanged="foldersItem_SelectedItemChanged"
           Width="Auto" Background="#FFFFFFFF"
           BorderBrush="#FFFFFFFF"
@@ -31,6 +31,18 @@
                     </Setter>
                 </Style>
             </TreeView.Resources>
-        </TreeView>
+        </TreeView>-->
+
+
+        <ListView Name="ListEntries" Background="Transparent"  Foreground="White"  >
+            <Label Content="Label" MouseDoubleClick="Label_MouseDoubleClick" Foreground="Azure" />
+        </ListView>
+        <!--<ListView d:ItemsSource="{d:SampleData ItemCount=5}" Foreground="Aqua">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>-->
     </Grid>
 </UserControl>
