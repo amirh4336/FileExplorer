@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DsProject.MWM.View;
+using System;
+using System.IO;
 using System.Windows;
-using System.Text.Json;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.IO;
-using DsProject.Core;
-using DsProject.MWM.ViewModel;
-using DsProject.MWM.View;
 
 namespace DsProject
 {
@@ -58,12 +47,16 @@ namespace DsProject
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+
+            // for showing Modal
+            OpenModal();
+
             string[] array = Directory.GetDirectories("D:/");
             DiscoveryView disc = new DiscoveryView();
             //var driveCommands = MainViewModel.DriveCommands;
             foreach (string s in Directory.GetLogicalDrives())
             {
-                
+
                 RadioButton rb = new RadioButton();
                 rb.Content = s;
                 rb.Height = 50;
@@ -113,5 +106,25 @@ namespace DsProject
             }
         }
 
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+            //Application.Current.Shutdown();
+        }
+        // showing Modal Func 
+        private void OpenModal()
+        {
+            CreateDataBase createDataBase = new CreateDataBase(this);
+            createDataBase.ShowDialog();
+            if (createDataBase.Success)
+            {
+                txtSearch.Text = createDataBase.Input;
+            }
+        }
     }
 }

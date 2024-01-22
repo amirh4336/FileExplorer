@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         Height="600" Width="920"
         ResizeMode="NoResize"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
         Background="Transparent"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -16,7 +17,7 @@
     <Window.DataContext>
         <viewModel:MainViewModel />
     </Window.DataContext>
-    
+
     <Border Background="#272537" CornerRadius="20">
 
         <Grid>
@@ -36,7 +37,10 @@
                 <RadioButton Content="Discovery" Height="50" Foreground="white" FontSize="14" Style="{StaticResource MenuButtomTheme}" Command="{Binding DiscoveryViewCommand}" />
                 <RadioButton Content="Featured" Height="50" Foreground="white" FontSize="14" Style="{StaticResource MenuButtomTheme}" />
             </StackPanel>
-            <TextBox Width="250" Height="40" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="5" Grid.Column="1" Style="{StaticResource ModernTextbox}" />
+            <StackPanel Grid.Column="1"  VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBox x:Name="txtSearch"  Width="250" Height="40" VerticalContentAlignment="Center" Margin="5" HorizontalAlignment="Left"  Style="{StaticResource ModernTextbox}" />
+                <Button x:Name="btnClose" Content="X" Width="32" Height="26" Margin="5" VerticalAlignment="Top" BorderBrush="Transparent" Background="Transparent" Foreground="White" Click="btnClose_Click" />
+            </StackPanel>
             <ContentControl Grid.Row="1"
                             Grid.Column="1"
                             Margin="10" Content="{Binding CurrentView}"/>
