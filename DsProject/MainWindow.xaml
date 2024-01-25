@@ -86,7 +86,12 @@
                     <Label Content="Label" MouseDoubleClick="Label_MouseDoubleClick" Foreground="Azure" />
                 </ListView>-->
             </Grid>
-            <TextBox Name="txtDir" TextChanged="txtDir_TextChanged" Text="Directory" Style="{StaticResource ModernTextbox}" Grid.Column="1" HorizontalAlignment="Left" Margin="77,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="225"/>
+            <TextBox Name="txtDir" 
+                     TextChanged="txtDir_TextChanged" 
+                     Text="{Binding Path, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource ModernTextbox}" 
+                     Grid.Column="1" 
+                     HorizontalAlignment="Left" Margin="77,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="225"/>
             <Button Name="btnBack" Click="btnBack_Click" Grid.Column="1" Content="back" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" RenderTransformOrigin="-0.517,-0.107"/>
             <Button Name="btnNext" Grid.Column="1" Content="Next" HorizontalAlignment="Left" Margin="47,0,0,0" VerticalAlignment="Center" RenderTransformOrigin="-0.517,-0.107"/>
         </Grid>

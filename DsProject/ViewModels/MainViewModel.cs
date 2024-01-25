@@ -4,7 +4,9 @@ using NamespaceHere;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +17,17 @@ namespace FileExplorer.ViewModels
     {
         public ObservableCollection<FilesControl> FileItems { get; set; }
 
+
+        public string Path
+        {
+            get { return pathWay; }
+            set
+            {
+                pathWay = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MainViewModel()
         {
             FileItems = new ObservableCollection<FilesControl>();
@@ -24,6 +37,7 @@ namespace FileExplorer.ViewModels
 
         public void TryNavigateToPath(string path)
         {
+            Path = path;
             // is a drive
             if (path == string.Empty)
             {
@@ -67,7 +81,9 @@ namespace FileExplorer.ViewModels
 
         public void NavigateFromModel(FileModel file)
         {
+            Path = file.Path;
             TryNavigateToPath(file.Path);
+            
         }
 
         #endregion

@@ -56,5 +56,11 @@ namespace NamespaceHere
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             callbackMethod?.Invoke();
         }
+
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 }

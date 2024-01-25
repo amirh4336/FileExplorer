@@ -60,7 +60,7 @@ namespace FileExplorer
         }
 
 
-        private string path;
+        
 
         
 
@@ -73,20 +73,6 @@ namespace FileExplorer
             set => this.DataContext = value;
         }
 
-        public string Path
-        {
-            get { return path; }
-            set
-            {
-
-                path = value;
-                OnPropertyChanged();
-                txtDir.Text = path;
-                //LabelHandler();
-            }
-        }
-
-        List<MyDataItem> items = new List<MyDataItem>();
 
 
         public MainWindow()
@@ -129,9 +115,9 @@ namespace FileExplorer
                 rb.Style = (Style)FindResource("MenuButtomTheme");
                 rb.Click += (sender, e) =>
                 {
-                    stackLastPrev.Push(path);
+                    //stackLastPrev.Push(path);
                     Model.TryNavigateToPath($@"{s}");
-                    Path = s;
+                    //Path = s;
                 };
                 dynamicVolumes.Children.Add(rb);
             }
@@ -219,22 +205,22 @@ namespace FileExplorer
             Label lbl = sender as Label;
             if (lbl != null)
             {
-                stackLastPrev.Push(path);
-                Path = lbl.Tag.ToString();
+                //stackLastPrev.Push(path);
+                //Path = lbl.Tag.ToString();
 
             }
         }
 
         private void txtDir_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Path = txtDir.Text;
+            //Path = txtDir.Text;
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             if (stackLastPrev.Count != 0)
             {
-                Path = stackLastPrev.Pop();
+                //Path = stackLastPrev.Pop();
             }
         }
 
