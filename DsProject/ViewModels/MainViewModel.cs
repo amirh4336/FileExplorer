@@ -17,6 +17,8 @@ namespace FileExplorer.ViewModels
     {
         public ObservableCollection<FilesControl> FileItems { get; set; }
 
+        private string pathWay = "";
+
 
         public string Path
         {
