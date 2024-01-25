@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace DsProject.Core
+namespace FileExplorer.Core
 {
     class RelayCommand : ICommand
     {

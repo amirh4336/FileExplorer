@@ -12,6 +12,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <COMReference Include="FileTracing">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>751131df-e7b6-453e-b976-f3cac8869507</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="2207344.jpg" />
   </ItemGroup>
 
@@ -19,6 +31,10 @@
     <Folder Include="Fonts\" />
     <Folder Include="Images\" />
     <Folder Include="MWM\Model\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="8.0.1" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DsProject
+namespace FileExplorer
 {
     /// <summary>
     /// Interaction logic for App.xaml

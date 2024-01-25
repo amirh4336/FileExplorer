@@ -1,15 +1,21 @@
-﻿using DsProject.Core;
-using DsProject.MWM.View;
-using DsProject.MWM.ViewModel;
+﻿using FileExplorer.Core;
+using FileExplorer.MWM.View;
+using FileExplorer.MWM.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
+using FileExplorer.ViewModels;
 
-namespace DsProject
+namespace FileExplorer
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -26,11 +32,18 @@ namespace DsProject
         public Decimal ProductPrice { get; set; }
     }
 
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
+        //Image img = new Image();
+        //img.Source = new BitmapImage(new Uri("ms-appx:///Assets/Logo.png"));
 
-        bool running = false;
+//        myImageSource.UriSource = new Uri("Images/MyImage.png", UriKind.Relative);
+//        myImageSource.EndInit();
+//myImage.Source = myImageSource;
+
+
+        Stack<string> stackLastPrev = new Stack<string>();
 
         Purchase purchase = new Purchase
         {
@@ -39,18 +52,47 @@ namespace DsProject
             ProductPrice = 2.49m
         };
 
-        private object dummyNode = null;
+        public class MyDataItem
+        {
+            public string ImagePath { get; set; }
+            public string Text { get; set; }
+            public string Tag { get; set; }
+        }
 
 
+        private string path;
+
+        
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
 
-        //MainViewModel mainViewModel = new MainViewModel();
-        DiscoveryView discoveryView = new DiscoveryView();
+        public MainViewModel Model
+        {
+            get => this.DataContext as MainViewModel;
+            set => this.DataContext = value;
+        }
+
+        public string Path
+        {
+            get { return path; }
+            set
+            {
+
+                path = value;
+                OnPropertyChanged();
+                txtDir.Text = path;
+                //LabelHandler();
+            }
+        }
+
+        List<MyDataItem> items = new List<MyDataItem>();
+
+
         public MainWindow()
         {
-
             InitializeComponent();
-            mainContent.Content = discoveryView;
+            Model.TryNavigateToPath("");
             this.Loaded += new RoutedEventHandler(Window_Loaded);
 
         }
@@ -59,8 +101,22 @@ namespace DsProject
 
             // for showing Modal
             OpenModal();
-            
-            //Dictionary<string, RelayCommand> driveCommands = mainViewModel.DriveCommands;
+
+            //ListEntries.Items.Clear();
+            //if (path == null)
+            //{
+            //    foreach (string s in Directory.GetDirectories("C://"))
+            //    {
+            //        Label item = new Label();
+            //        item.Content = s;
+            //        item.Tag = s;
+            //        item.FontWeight = FontWeights.Normal;
+            //        item.Foreground = Brushes.White;
+            //        item.MouseDoubleClick += Label_MouseDoubleClick;
+            //        ListEntries.Items.Add(item);
+
+            //    }
+            //}
 
             foreach (string s in Directory.GetLogicalDrives())
             {
@@ -71,45 +127,13 @@ namespace DsProject
                 rb.Foreground = new SolidColorBrush(Colors.White);
                 rb.FontSize = 14;
                 rb.Style = (Style)FindResource("MenuButtomTheme");
-                //if (driveCommands.ContainsKey(s))
-                //{
-                //    rb.Command = driveCommands[s];
-                //}
                 rb.Click += (sender, e) =>
                 {
-                    discoveryView.Path = s;
+                    stackLastPrev.Push(path);
+                    Model.TryNavigateToPath($@"{s}");
+                    Path = s;
                 };
                 dynamicVolumes.Children.Add(rb);
-            }
-        }
-
-        private void foldersItem_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            // Your code here. For example:
-            TreeViewItem selectedItem = (TreeViewItem)e.NewValue;
-            // Do something with selectedItem
-        }
-
-        private void folder_Expanded(object sender, RoutedEventArgs e)
-        {
-            TreeViewItem item = (TreeViewItem)sender;
-            if (item.Items.Count == 1 && item.Items[0] == dummyNode)
-            {
-                item.Items.Clear();
-                try
-                {
-                    foreach (string s in Directory.GetDirectories(item.Tag.ToString()))
-                    {
-                        TreeViewItem subitem = new TreeViewItem();
-                        subitem.Header = s.Substring(s.LastIndexOf("\\") + 1);
-                        subitem.Tag = s;
-                        subitem.FontWeight = FontWeights.Normal;
-                        subitem.Items.Add(dummyNode);
-                        subitem.Expanded += new RoutedEventHandler(folder_Expanded);
-                        item.Items.Add(subitem);
-                    }
-                }
-                catch (Exception) { }
             }
         }
 
@@ -132,6 +156,91 @@ namespace DsProject
             {
                 txtSearch.Text = createDataBase.Input;
             }
+        }
+
+
+
+        //private void LabelHandler()
+        //{
+
+            
+        //    //ListEntries.ItemsSource = items;
+
+
+        //    //ListEntries.ItemsSource.Clear();
+        //    if (!Directory.Exists(path))
+        //    {
+        //        foreach (var s in Directory.GetLogicalDrives())
+        //        {
+        //            Label item = new Label();
+        //            string result = s.Replace(path, "");
+        //            item.Content = result;
+        //            item.Tag = s;
+        //            item.FontWeight = FontWeights.Normal;
+        //            item.Foreground = Brushes.White;
+        //            item.MouseDoubleClick += Label_MouseDoubleClick;
+        //            items.Add(new MyDataItem() { ImagePath = "Images/folderImg.jpg", Text = result, Tag =s });
+        //            //ListEntries.Items.Add(item);
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        foreach (var s in Directory.GetDirectories(path))
+        //        {
+        //            Label item = new Label();
+        //            string result = s.Replace(path, "");
+        //            item.Content = result;
+        //            item.Tag = s;
+        //            item.FontWeight = FontWeights.Normal;
+        //            item.Foreground = Brushes.White;
+        //            item.MouseDoubleClick += Label_MouseDoubleClick;
+        //            //ListEntries.Items.Add(item);
+        //            items.Add(new MyDataItem() { ImagePath = "Images/folderImg.jpg", Text = result, Tag = s });
+        //        }
+        //        foreach (var s in Directory.GetFiles(path))
+        //        {
+        //            Label item = new Label();
+        //            string result = s.Replace(path, "");
+        //            item.Content = result;
+        //            item.Tag = s;
+        //            item.FontWeight = FontWeights.Normal;
+        //            item.Foreground = Brushes.White;
+        //            item.MouseDoubleClick += Label_MouseDoubleClick;
+        //            //ListEntries.Items.Add(item);
+        //            items.Add(new MyDataItem() { ImagePath = "Images/folderImg.jpg", Text = result, Tag = s });
+        //        }
+        //        ListEntries.ItemsSource = items;
+        //    }
+        //}
+
+        private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Label lbl = sender as Label;
+            if (lbl != null)
+            {
+                stackLastPrev.Push(path);
+                Path = lbl.Tag.ToString();
+
+            }
+        }
+
+        private void txtDir_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Path = txtDir.Text;
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            if (stackLastPrev.Count != 0)
+            {
+                Path = stackLastPrev.Pop();
+            }
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

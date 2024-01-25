@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DsProject.MWM.View
+namespace FileExplorer.MWM.View
 {
     /// <summary>
     /// Interaction logic for DiscoveryView.xaml

@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace DsProject.MWM.View
+namespace FileExplorer.MWM.View
 {
     /// <summary>
     /// Interaction logic for CreateDataBase.xaml

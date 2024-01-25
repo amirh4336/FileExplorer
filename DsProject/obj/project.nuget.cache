@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "daBahTTGZUDo9XCyW35kqfeToQ1T3yP76MrcEh4ic0cDtdmYPpmVU9euK27g3x4CgshTWW9IS5fMx7bcpkaMdQ==",
+  "dgSpecHash": "UukaBkCf73/N1TUol9T1v5MMR8S9VfP+58ryCWTJQ2u6ZXyZTukCICvYsIE5Er5lMI4K7lOaJEVpscz85HcktQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\smart\\source\\repos\\FileExplorer\\DsProject\\DsProject.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "D:\\testExp\\DsProject\\DsProject.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\smart\\.nuget\\packages\\microsoft.win32.systemevents\\8.0.0\\microsoft.win32.systemevents.8.0.0.nupkg.sha512",
+    "C:\\Users\\smart\\.nuget\\packages\\system.drawing.common\\8.0.1\\system.drawing.common.8.0.1.nupkg.sha512"
+  ],
   "logs": []
 }

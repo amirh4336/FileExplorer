@@ -1,4 +1,4 @@
-﻿using DsProject.Core;
+﻿using FileExplorer.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DsProject.MWM.View
+namespace FileExplorer.MWM.View
 {
     /// <summary>
     /// Interaction logic for HomeView.xaml

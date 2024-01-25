@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace DsProject.Core
+namespace FileExplorer.Core
 {
     class ObservableObject : INotifyPropertyChanged
     {
