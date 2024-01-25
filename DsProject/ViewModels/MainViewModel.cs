@@ -16,6 +16,9 @@ namespace FileExplorer.ViewModels
     public class MainViewModel : BaseViewModel
     {
         public ObservableCollection<FilesControl> FileItems { get; set; }
+        Stack<string> stackLastPrev = new Stack<string>();
+
+        Stack<string> stackLastNext = new Stack<string>();
 
         private string pathWay = "";
 
@@ -26,6 +29,7 @@ namespace FileExplorer.ViewModels
             set
             {
                 pathWay = value;
+                stackLastPrev.Push(pathWay);
                 OnPropertyChanged();
             }
         }
@@ -45,7 +49,7 @@ namespace FileExplorer.ViewModels
             {
                 ClearFiles();
 
-                foreach(FileModel drive in Fetcher.GetDrives())
+                foreach (FileModel drive in Fetcher.GetDrives())
                 {
                     FilesControl fc = CreateFileControl(drive);
                     AddFile(fc);
@@ -62,7 +66,7 @@ namespace FileExplorer.ViewModels
             {
                 ClearFiles();
 
-                foreach(FileModel dir in Fetcher.GetDirectories(path))
+                foreach (FileModel dir in Fetcher.GetDirectories(path))
                 {
                     FilesControl fc = CreateFileControl(dir);
                     AddFile(fc);
@@ -83,9 +87,7 @@ namespace FileExplorer.ViewModels
 
         public void NavigateFromModel(FileModel file)
         {
-            Path = file.Path;
             TryNavigateToPath(file.Path);
-            
         }
 
         #endregion
@@ -115,6 +117,36 @@ namespace FileExplorer.ViewModels
         public void SetupFileControlCallbacks(FilesControl fc)
         {
             fc.NavigateToPathCallback = NavigateFromModel;
+        }
+
+
+        public void BtnBack_Click()
+        {
+            if (stackLastPrev.Count > 1)
+            {
+                stackLastNext.Push(stackLastPrev.Pop());
+                stackLastNext.Push(stackLastPrev.Peek());
+                TryNavigateToPath(stackLastPrev.Pop());
+            } else if (stackLastPrev.Count == 1)
+            {
+                stackLastNext.Push(stackLastPrev.Pop());
+                TryNavigateToPath("");
+            } 
+        }
+
+        public void BtnNext_Click()
+        {
+            if (stackLastNext.Count > 1)
+            {
+                stackLastPrev.Push(stackLastNext.Pop());
+                stackLastPrev.Push(stackLastNext.Peek());
+                TryNavigateToPath(stackLastNext.Pop());
+            }
+            else if (stackLastNext.Count == 1)
+            {
+                stackLastPrev.Push(stackLastNext.Pop());
+                TryNavigateToPath("");
+            }
         }
     }
 }

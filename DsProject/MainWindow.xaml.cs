@@ -88,22 +88,6 @@ namespace FileExplorer
             // for showing Modal
             OpenModal();
 
-            //ListEntries.Items.Clear();
-            //if (path == null)
-            //{
-            //    foreach (string s in Directory.GetDirectories("C://"))
-            //    {
-            //        Label item = new Label();
-            //        item.Content = s;
-            //        item.Tag = s;
-            //        item.FontWeight = FontWeights.Normal;
-            //        item.Foreground = Brushes.White;
-            //        item.MouseDoubleClick += Label_MouseDoubleClick;
-            //        ListEntries.Items.Add(item);
-
-            //    }
-            //}
-
             foreach (string s in Directory.GetLogicalDrives())
             {
 
@@ -218,15 +202,17 @@ namespace FileExplorer
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            if (stackLastPrev.Count != 0)
-            {
-                //Path = stackLastPrev.Pop();
-            }
+                Model.BtnBack_Click();
         }
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            Model.BtnNext_Click();
         }
     }
 }
