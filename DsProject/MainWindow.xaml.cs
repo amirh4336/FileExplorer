@@ -14,6 +14,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using FileExplorer.ViewModels;
+using System.Text.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Json;
 
 namespace FileExplorer
 {
@@ -35,16 +39,6 @@ namespace FileExplorer
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
-        //Image img = new Image();
-        //img.Source = new BitmapImage(new Uri("ms-appx:///Assets/Logo.png"));
-
-//        myImageSource.UriSource = new Uri("Images/MyImage.png", UriKind.Relative);
-//        myImageSource.EndInit();
-//myImage.Source = myImageSource;
-
-
-        Stack<string> stackLastPrev = new Stack<string>();
-
         Purchase purchase = new Purchase
         {
             ProductName = "amir Hossien",
@@ -59,10 +53,26 @@ namespace FileExplorer
             public string Tag { get; set; }
         }
 
+        //public static int CalculateJsonSize(object obj)
+        //{
+        //    var options = new JsonSerializerOptions
+        //    {
+        //        WriteIndented = true
+        //    };
 
-        
+        //    using var stream = new MemoryStream();
+        //    using var writer = new Utf8JsonWriter(stream);
+        //    JsonSerializer.Serialize(writer, obj, options);
+        //    writer.Flush();
 
-        
+        //    return (int)stream.Length;
+        //}
+
+
+
+
+
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -84,6 +94,13 @@ namespace FileExplorer
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            string jsonContent = File.ReadAllText("jjj.json");
+            dynamic dbFile = JsonConvert.DeserializeObject(jsonContent);
+            var newResultToAdd = new JObject(
+                    new JProperty("name", "ss")
+                    new 
+                ); ;
+            foreach (var k in dbFile)
 
             // for showing Modal
             OpenModal();
@@ -128,76 +145,9 @@ namespace FileExplorer
             }
         }
 
-
-
-        //private void LabelHandler()
-        //{
-
-            
-        //    //ListEntries.ItemsSource = items;
-
-
-        //    //ListEntries.ItemsSource.Clear();
-        //    if (!Directory.Exists(path))
-        //    {
-        //        foreach (var s in Directory.GetLogicalDrives())
-        //        {
-        //            Label item = new Label();
-        //            string result = s.Replace(path, "");
-        //            item.Content = result;
-        //            item.Tag = s;
-        //            item.FontWeight = FontWeights.Normal;
-        //            item.Foreground = Brushes.White;
-        //            item.MouseDoubleClick += Label_MouseDoubleClick;
-        //            items.Add(new MyDataItem() { ImagePath = "Images/folderImg.jpg", Text = result, Tag =s });
-        //            //ListEntries.Items.Add(item);
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        foreach (var s in Directory.GetDirectories(path))
-        //        {
-        //            Label item = new Label();
-        //            string result = s.Replace(path, "");
-        //            item.Content = result;
-        //            item.Tag = s;
-        //            item.FontWeight = FontWeights.Normal;
-        //            item.Foreground = Brushes.White;
-        //            item.MouseDoubleClick += Label_MouseDoubleClick;
-        //            //ListEntries.Items.Add(item);
-        //            items.Add(new MyDataItem() { ImagePath = "Images/folderImg.jpg", Text = result, Tag = s });
-        //        }
-        //        foreach (var s in Directory.GetFiles(path))
-        //        {
-        //            Label item = new Label();
-        //            string result = s.Replace(path, "");
-        //            item.Content = result;
-        //            item.Tag = s;
-        //            item.FontWeight = FontWeights.Normal;
-        //            item.Foreground = Brushes.White;
-        //            item.MouseDoubleClick += Label_MouseDoubleClick;
-        //            //ListEntries.Items.Add(item);
-        //            items.Add(new MyDataItem() { ImagePath = "Images/folderImg.jpg", Text = result, Tag = s });
-        //        }
-        //        ListEntries.ItemsSource = items;
-        //    }
-        //}
-
-        private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            Label lbl = sender as Label;
-            if (lbl != null)
-            {
-                //stackLastPrev.Push(path);
-                //Path = lbl.Tag.ToString();
-
-            }
-        }
-
         private void txtDir_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //Path = txtDir.Text;
+            
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)

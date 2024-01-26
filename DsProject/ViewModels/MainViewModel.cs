@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -59,7 +60,17 @@ namespace FileExplorer.ViewModels
             else if (path.IsFile())
             {
                 // Open the file
-                MessageBox.Show($"Opening {path}");
+                MessageBox.Show($"Opening @{path}");
+                Process.Start(@path);
+                //Process.Start(@"D:\Screenshot 2024-01-10 125229.png");
+                try
+                {
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("af");
+                    // Errorhandling
+                }
             }
 
             else if (path.IsDirectory())
@@ -127,11 +138,12 @@ namespace FileExplorer.ViewModels
                 stackLastNext.Push(stackLastPrev.Pop());
                 stackLastNext.Push(stackLastPrev.Peek());
                 TryNavigateToPath(stackLastPrev.Pop());
-            } else if (stackLastPrev.Count == 1)
+            }
+            else if (stackLastPrev.Count == 1)
             {
                 stackLastNext.Push(stackLastPrev.Pop());
                 TryNavigateToPath("");
-            } 
+            }
         }
 
         public void BtnNext_Click()

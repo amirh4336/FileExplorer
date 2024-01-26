@@ -61,7 +61,7 @@ namespace FileExplorer.MWM.View {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/DsProject;component/mwm/view/discoveryview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/DsProject;V1.0.0.0;component/mwm/view/discoveryview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\MWM\View\DiscoveryView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
