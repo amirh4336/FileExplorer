@@ -61,7 +61,7 @@ namespace FileExplorer {
             
             #line default
             #line hidden
-            System.Uri resourceLocater = new System.Uri("/DsProject;V1.0.0.0;component/app.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/DsProject;component/app.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\App.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

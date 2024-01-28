@@ -124,3 +124,6 @@ D:\testExp\DsProject\bin\Debug\net6.0-windows\System.Drawing.Common.dll
 D:\testExp\DsProject\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
 D:\testExp\DsProject\obj\Debug\net6.0-windows\Files\FilesControl.baml
 D:\testExp\DsProject\obj\Debug\net6.0-windows\DsProject.csproj.CopyComplete
+D:\testExp\DsProject\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
+D:\testExp\DsProject\obj\Debug\net6.0-windows\Files\FilesControlSystem.g.cs
+D:\testExp\DsProject\obj\Debug\net6.0-windows\Files\FilesControlSystem.baml

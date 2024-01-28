@@ -57,16 +57,23 @@
             </Grid.RowDefinitions>
             <TextBlock Text="FileExplorer" FontFamily="/Fonts/#Poppins" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="22, 0 , 0 ,0" Foreground="White" FontSize="22" />
 
-            <StackPanel x:Name="dynamicVolumes" Grid.Row="1"></StackPanel>
+            <StackPanel Grid.Row="1">
+                <StackPanel x:Name="dynamicFileSystem" >
+                </StackPanel>
+                <StackPanel x:Name="dynamicVolumes"></StackPanel>
+            </StackPanel>
             <StackPanel Grid.Column="1"  VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Right">
                 <TextBox x:Name="txtSearch"  Width="178" Height="40" VerticalContentAlignment="Center" Margin="5"  Style="{StaticResource ModernTextbox}" />
                 <Button x:Name="btnClose" Content="X" Width="32" Height="26" Margin="5" VerticalAlignment="Top" BorderBrush="Transparent" 
                          Click="btnClose_Click" />
             </StackPanel>
             <Grid Grid.Column="1" Grid.Row="1" Margin="5" >
-
+                <ListBox Background="Transparent"
+                        HorizontalContentAlignment="Stretch" Margin="0,20,0,0"
+                         ItemsSource="{Binding FileItemsSystem, UpdateSourceTrigger=PropertyChanged}"
+                         />
                 <ListBox Background="Transparent" ItemsSource="{Binding FileItems, UpdateSourceTrigger=PropertyChanged}"
-         HorizontalContentAlignment="Stretch" Margin="0,20,0,0"/>
+                            HorizontalContentAlignment="Stretch" Margin="0,20,0,0"/>
             </Grid>
             <TextBox Name="txtDir" 
                      TextChanged="txtDir_TextChanged" 
