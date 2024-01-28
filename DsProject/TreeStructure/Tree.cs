@@ -146,7 +146,7 @@ namespace DsProject.TreeStructure
 
         public GeneralTree(E rootElm)
         {
-            root = CreateNode(rootElm, null , null);
+            root = CreateNode(rootElm, null, null);
             size = 0;
         }
 
@@ -166,7 +166,7 @@ namespace DsProject.TreeStructure
 
         public override IEnumerable<IPosition<E>> Children(IPosition<E> p)
         {
-            Node node = p as Node;
+            Node node = Validate(p);
             return node.Children;
         }
 
@@ -175,14 +175,73 @@ namespace DsProject.TreeStructure
             throw new NotImplementedException();
         }
 
-        public IPosition<E> AddChild(IPosition<E> p, E e)
+        public void AddChild(IPosition<E> p, E e)
         {
-            Node parent = p as Node;
+            Node parent = Validate(p);
             Node child = CreateNode(e, parent, null);
             parent.Children.Add(child);
             size++;
-            return child;
         }
+
+        public void DeleteChild(IPosition<E> p)
+        {
+            Node node = Validate(p);
+            Node parent = node.Parent;
+
+            if (parent != null)
+            {
+                parent.Children.Remove(node);
+                size--;
+            }
+            //else
+            //{
+            //    root = null;
+            //    size = 0;
+            //}
+        }
+
+        public void Copy(IPosition<E> source, IPosition<E> destination)
+        {
+            Node sourceNode = Validate(source);
+            if (destination == null)
+            {
+                destination = new GeneralTree<E>(sourceNode.Element).Root;
+            }
+
+            Node destNode = Validate(destination);
+            CopySubtree(sourceNode, destNode);
+        }
+
+        private void CopySubtree(Node sourceNode, Node destNode)
+        {
+            Node newNode = CreateNode(sourceNode.Element, destNode, new List<Node>());
+            destNode.Children.Add(newNode);
+
+            foreach (Node child in sourceNode.Children)
+            {
+                CopySubtree(child, newNode);
+            }
+        }
+
+        public void Cut(IPosition<E> p, IPosition<E> destination)
+        {
+            Copy(p, destination);
+            DeleteChild(p);
+        }
+
+        public void Paste(IPosition<E> destination, IPosition<E> copiedNode)
+        {
+            Node destNode = Validate(destination);
+            Node copiedNodeNode = Validate(copiedNode);
+            Node newNode = CreateNode(copiedNodeNode.Element, destNode, new List<Node>());
+            destNode.Children.Add(newNode);
+
+            foreach (Node child in copiedNodeNode.Children)
+            {
+                CopySubtree(child, newNode);
+            }
+        }
+
     }
 
 }

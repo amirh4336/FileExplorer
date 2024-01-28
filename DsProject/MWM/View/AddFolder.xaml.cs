@@ -19,9 +19,44 @@ namespace DsProject.MWM.View
     /// </summary>
     public partial class AddFolder : Window
     {
-        public AddFolder()
+
+        public bool Success { get; set; }
+        public string Input { get; set; }
+
+
+        public AddFolder(Window parentWindow)
         {
+            Owner = parentWindow;
             InitializeComponent();
+        }
+
+        private void btnOk_Click(object sender, RoutedEventArgs e)
+        {
+            Success = true;
+            Input = txtInput.Text;
+            Close();
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
+        private void txtInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(txtInput.Text))
+            {
+                btnOk.IsEnabled = true;
+            }
+            else
+            {
+                btnOk.IsEnabled = false;
+            }
         }
     }
 }

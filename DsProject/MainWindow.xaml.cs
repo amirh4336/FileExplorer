@@ -49,13 +49,6 @@ namespace FileExplorer
             ProductPrice = 2.49m
         };
 
-        public class MyDataItem
-        {
-            public string ImagePath { get; set; }
-            public string Text { get; set; }
-            public string Tag { get; set; }
-        }
-
         //public static int CalculateJsonSize(object obj)
         //{
         //    var options = new JsonSerializerOptions
@@ -207,8 +200,6 @@ namespace FileExplorer
                     }
                 }
 
-
-                txtSearch.Text = $"{targetSize} bytes";
             }
         }
 
@@ -225,6 +216,20 @@ namespace FileExplorer
                 PCTree.AddChild(PCTree.Root, namePart);
             }
         }
+
+        private void OpenFolderModal()
+        {
+            AddFolder addFolder = new AddFolder(this);
+            addFolder.ShowDialog();
+            if (addFolder.Success)
+            {
+                string nameFolder = addFolder.Input;
+
+                Model.AddFolder(nameFolder);
+            }
+        }
+
+        // btns
 
 
         private void txtDir_TextChanged(object sender, TextChangedEventArgs e)
@@ -250,6 +255,11 @@ namespace FileExplorer
         private void addPartion_Click(object sender, RoutedEventArgs e)
         {
             OpenPartionnModal();
+        }
+
+        private void addFolder_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFolderModal();
         }
     }
 }

@@ -2,6 +2,7 @@
 using DsProject.TreeStructure;
 using FileExplorer.Explorer;
 using FileExplorer.Files;
+using Microsoft.VisualBasic;
 using NamespaceHere;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,35 @@ namespace FileExplorer.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        public ObservableCollection<FilesControl> FileItems { get; set; }
+
+        // file system
         public ObservableCollection<FilesControlSystem> FileItemsSystem { get; set; }
 
+        public IPosition<string> ParentNode; 
+
         public GeneralTree<string> PCtree;
+
+        Stack<string> stackLastPrevSys = new Stack<string>();
+
+        private string pathWaySys = "";
+
+
+        public string PathSys
+        {
+            get { return pathWaySys; }
+            set
+            {
+                pathWaySys = value;
+                stackLastPrevSys.Push(pathWaySys);
+
+                OnPropertyChanged();
+            }
+        }
+
+
+        // file Explorer
+        public ObservableCollection<FilesControl> FileItems { get; set; }
+
 
         Stack<string> stackLastPrev = new Stack<string>();
 
@@ -41,6 +67,8 @@ namespace FileExplorer.ViewModels
                 OnPropertyChanged();
             }
         }
+
+
 
         public MainViewModel()
         {
@@ -117,6 +145,9 @@ namespace FileExplorer.ViewModels
         {
 
             PCtree = tempTree;
+            ParentNode = p;
+
+            PathSys = ShowingPath();
 
             IEnumerable<IPosition<string>> Children = PCtree.Children(p);
 
@@ -131,6 +162,9 @@ namespace FileExplorer.ViewModels
         }
         public void NavigateFromModel(IPosition<string> p)
         {
+
+            ParentNode = p;
+            PathSys = ShowingPath();
 
             ClearFilesSystem();
             IEnumerable<IPosition<string>> Children = PCtree.Children(p);
@@ -227,5 +261,31 @@ namespace FileExplorer.ViewModels
                 TryNavigateToPath("");
             }
         }
+    
+        // copy past cut add file System
+        public void AddFolder(string nameFolder)
+        {
+            PCtree.AddChild(ParentNode, nameFolder);
+        }
+
+        public string ShowingPath()
+        {
+            List<string> pathNodes = new List<string>();
+
+            IPosition<string> position = ParentNode;
+
+            while (position != null)
+            {
+                pathNodes.Add(position.Element);
+                position = PCtree.Parent(position);
+            }
+
+            pathNodes.Reverse();
+
+
+            return string.Join("/", pathNodes);
+            ;
+        }
+
     }
 }

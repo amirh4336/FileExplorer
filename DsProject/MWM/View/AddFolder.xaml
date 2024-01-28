@@ -12,7 +12,9 @@
         >
     <Grid >
         <Label Content="name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtInput" TextChanged="txtInput_TextChanged" HorizontalAlignment="Left" Margin="10,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.125,-1.726"/>
+        <TextBox x:Name="txtInput" TextChanged="txtInput_TextChanged" HorizontalAlignment="Left" Margin="10,36,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.125,-1.726"/>
+        <Button x:Name="btnCancel" Content="Cancel" Click="btnCancel_Click" HorizontalAlignment="Left" Margin="84,69,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnOk" Content="Ok"  Click="btnOk_Click" HorizontalAlignment="Left" Margin="19,69,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.488,0.534" Width="51"/>
 
     </Grid>
 </Window>

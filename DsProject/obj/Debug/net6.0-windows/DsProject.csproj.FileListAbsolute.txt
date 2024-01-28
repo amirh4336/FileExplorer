@@ -126,3 +126,4 @@ D:\testExp\DsProject\obj\Debug\net6.0-windows\Files\FilesControlSystem.baml
 D:\testExp\DsProject\obj\Debug\net6.0-windows\MWM\View\AddPartions.g.cs
 D:\testExp\DsProject\obj\Debug\net6.0-windows\MWM\View\AddPartions.baml
 D:\testExp\DsProject\obj\Debug\net6.0-windows\MWM\View\AddFolder.g.cs
+D:\testExp\DsProject\obj\Debug\net6.0-windows\MWM\View\AddFolder.baml
