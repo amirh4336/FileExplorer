@@ -71,6 +71,8 @@ namespace FileExplorer
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        public GeneralTree<string> PCTree = new GeneralTree<string>("This PC");
+
 
         public MainViewModel Model
         {
@@ -78,11 +80,10 @@ namespace FileExplorer
             set => this.DataContext = value;
         }
 
-        public GeneralTree<string> PCTree = new GeneralTree<string>("This PC");
-
         public MainWindow()
         {
-        IPosition<string> treeRoot = PCTree.Root;
+
+            IPosition<string> treeRoot = PCTree.Root;
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(Window_Loaded);
             Model.TryNavigateToPath("");
@@ -208,7 +209,7 @@ namespace FileExplorer
                 int sizePart = int.Parse(addPartions.InputSize);
                 string namePart = addPartions.InputName;
 
-                PCTree.AddChild(PCTree.Root, namePart);
+                Model.AddPartion(namePart);
             }
         }
 
@@ -229,12 +230,12 @@ namespace FileExplorer
 
         private void txtDir_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-                Model.BtnBack_Click();
+            Model.BtnBack_Click();
         }
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)
@@ -249,12 +250,16 @@ namespace FileExplorer
 
         private void addPartion_Click(object sender, RoutedEventArgs e)
         {
-            OpenPartionnModal();
+            
+                OpenPartionnModal();
         }
 
         private void addFolder_Click(object sender, RoutedEventArgs e)
         {
-            OpenFolderModal();
+            if (Model.ParentNode != PCTree.Root && Model.ParentNode != null)
+            {
+                OpenFolderModal();
+            }
         }
 
         private void btnBackFileSystem_Click(object sender, RoutedEventArgs e)

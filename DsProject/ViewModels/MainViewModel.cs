@@ -265,9 +265,19 @@ namespace FileExplorer.ViewModels
         }
 
         // copy past cut add file System
+
+        public void AddPartion(string namePartion)
+        {
+            PCtree.AddChild(ParentNode, namePartion);
+            Refresh();
+        }
+
+
         public void AddFolder(string nameFolder)
         {
-            PCtree.AddChild(ParentNode, nameFolder);
+            if (ParentNode != PCtree.Root)
+                PCtree.AddChild(ParentNode, nameFolder);
+            Refresh();
         }
 
         public string ShowingPath()
@@ -307,7 +317,12 @@ namespace FileExplorer.ViewModels
 
         public void DeleteItem()
         {
+            if (SelectedPosition != null)
+            {
             PCtree.Delete(SelectedPosition);
+                
+            }
+            Refresh();
         }
 
         public void CopyItem()
@@ -345,6 +360,16 @@ namespace FileExplorer.ViewModels
 
             CopyPosition = null;
             CutPosition = null;
+            Refresh();
+        }
+
+        public void Refresh()
+        {
+            if (ParentNode != null)
+            {
+
+                NavigateFromModel(ParentNode);
+            }
         }
 
 
