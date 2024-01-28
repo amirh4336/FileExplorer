@@ -1,5 +1,4 @@
-﻿using FileExplorer.Core;
-using FileExplorer.MWM.View;
+﻿using FileExplorer.MWM.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -118,9 +117,7 @@ namespace FileExplorer
             rbFile.Style = (Style)FindResource("MenuButtomTheme");
             rbFile.Click += (sender, e) =>
             {
-                //stackLastPrev.Push(path);
                 Model.TryNavigateWithTree(PCTree, treeRoot);
-                //Path = s;
             };
             dynamicFileSystem.Children.Add(rbFile);
 
@@ -149,9 +146,7 @@ namespace FileExplorer
                 rb.Style = (Style)FindResource("MenuButtomTheme");
                 rb.Click += (sender, e) =>
                 {
-                    //stackLastPrev.Push(path);
                     Model.TryNavigateToPath($@"{s}");
-                    //Path = s;
                 };
                 dynamicVolumes.Children.Add(rb);
             }
@@ -260,6 +255,31 @@ namespace FileExplorer
         private void addFolder_Click(object sender, RoutedEventArgs e)
         {
             OpenFolderModal();
+        }
+
+        private void btnBackFileSystem_Click(object sender, RoutedEventArgs e)
+        {
+            Model.BackDirctory();
+        }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            Model.CopyItem();
+        }
+
+        private void cut_Click(object sender, RoutedEventArgs e)
+        {
+            Model.CutItem();
+        }
+
+        private void paste_Click(object sender, RoutedEventArgs e)
+        {
+            Model.PasteItem();
+        }
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            Model.DeleteItem();
         }
     }
 }

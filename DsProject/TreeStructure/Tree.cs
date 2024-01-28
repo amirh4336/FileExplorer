@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -183,7 +184,7 @@ namespace DsProject.TreeStructure
             size++;
         }
 
-        public void DeleteChild(IPosition<E> p)
+        public void Delete(IPosition<E> p)
         {
             Node node = Validate(p);
             Node parent = node.Parent;
@@ -226,7 +227,7 @@ namespace DsProject.TreeStructure
         public void Cut(IPosition<E> p, IPosition<E> destination)
         {
             Copy(p, destination);
-            DeleteChild(p);
+            Delete(p);
         }
 
         public void Paste(IPosition<E> destination, IPosition<E> copiedNode)
@@ -239,6 +240,23 @@ namespace DsProject.TreeStructure
             foreach (Node child in copiedNodeNode.Children)
             {
                 CopySubtree(child, newNode);
+            }
+        }
+
+        private long GetJsonSize(IPosition<E> position)
+        {
+            try
+            {
+                Node node = Validate(position);
+                dynamic jsonContent = JsonConvert.SerializeObject(new { Element = node });
+                byte[] jsonBytes = System.Text.Encoding.UTF8.GetBytes(jsonContent);
+                long jsonSize = jsonBytes.Length;
+                return jsonSize;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return -1;
             }
         }
 

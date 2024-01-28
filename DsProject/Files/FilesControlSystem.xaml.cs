@@ -38,6 +38,8 @@ namespace DsProject.Files
         /// </summary>
         public Action<IPosition<string>> NavigateToPathCallback { get; set; }
 
+        public Action<IPosition<string>> SelectedItemCallback { get; set; }
+
         //public FilesControl()
         //{
         //    InitializeComponent();
@@ -58,6 +60,13 @@ namespace DsProject.Files
                 e.ClickCount == 2)
             {
                 NavigateToPathCallback?.Invoke(File);
+            }
+
+            if (e.ChangedButton == MouseButton.Right &&
+                e.RightButton == MouseButtonState.Pressed &&
+                e.ClickCount == 1)
+            {
+                SelectedItemCallback?.Invoke(File);
             }
         }
 

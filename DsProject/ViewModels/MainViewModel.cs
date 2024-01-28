@@ -2,18 +2,11 @@
 using DsProject.TreeStructure;
 using FileExplorer.Explorer;
 using FileExplorer.Files;
-using Microsoft.VisualBasic;
 using NamespaceHere;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace FileExplorer.ViewModels
@@ -24,11 +17,15 @@ namespace FileExplorer.ViewModels
         // file system
         public ObservableCollection<FilesControlSystem> FileItemsSystem { get; set; }
 
-        public IPosition<string> ParentNode; 
+        public IPosition<string> ParentNode;
+
+        public IPosition<string> SelectedPosition;
+
+        public IPosition<string> CopyPosition;
+
+        public IPosition<string> CutPosition;
 
         public GeneralTree<string> PCtree;
-
-        Stack<string> stackLastPrevSys = new Stack<string>();
 
         private string pathWaySys = "";
 
@@ -39,7 +36,6 @@ namespace FileExplorer.ViewModels
             set
             {
                 pathWaySys = value;
-                stackLastPrevSys.Push(pathWaySys);
 
                 OnPropertyChanged();
             }
@@ -141,7 +137,7 @@ namespace FileExplorer.ViewModels
 
         // file System
 
-        public void TryNavigateWithTree(GeneralTree<string> tempTree ,IPosition<string> p)
+        public void TryNavigateWithTree(GeneralTree<string> tempTree, IPosition<string> p)
         {
 
             PCtree = tempTree;
@@ -165,6 +161,11 @@ namespace FileExplorer.ViewModels
 
             ParentNode = p;
             PathSys = ShowingPath();
+
+            if (ParentNode == CutPosition)
+            {
+                CutPosition = null;
+            }
 
             ClearFilesSystem();
             IEnumerable<IPosition<string>> Children = PCtree.Children(p);
@@ -190,6 +191,7 @@ namespace FileExplorer.ViewModels
         {
             FilesControlSystem fc = new FilesControlSystem(fModel);
             SetupFileControlCallbacks(fc);
+            fc.SelectedItemCallback = SelectItem;
             return fc;
         }
 
@@ -261,7 +263,7 @@ namespace FileExplorer.ViewModels
                 TryNavigateToPath("");
             }
         }
-    
+
         // copy past cut add file System
         public void AddFolder(string nameFolder)
         {
@@ -286,6 +288,65 @@ namespace FileExplorer.ViewModels
             return string.Join("/", pathNodes);
             ;
         }
+
+
+        public void BackDirctory()
+        {
+            IPosition<string> position = PCtree.Parent(ParentNode);
+
+            if (position != null)
+            {
+                NavigateFromModel(position);
+            }
+        }
+
+        public void SelectItem(IPosition<string> select)
+        {
+            SelectedPosition = select;
+        }
+
+        public void DeleteItem()
+        {
+            PCtree.Delete(SelectedPosition);
+        }
+
+        public void CopyItem()
+        {
+            if (SelectedPosition != null)
+            {
+                CopyPosition = SelectedPosition;
+                SelectedPosition = null;
+                CutPosition = null;
+            }
+        }
+
+
+        public void CutItem()
+        {
+            if (SelectedPosition != null)
+            {
+                CutPosition = SelectedPosition;
+                SelectedPosition = null;
+                CopyPosition = null;
+            }
+        }
+
+        public void PasteItem()
+        {
+            if (CopyPosition != null)
+            {
+                PCtree.Copy(CopyPosition, ParentNode);
+            }
+            if (CutPosition != null)
+            {
+                PCtree.Cut(CutPosition, ParentNode);
+            }
+
+
+            CopyPosition = null;
+            CutPosition = null;
+        }
+
 
     }
 }

@@ -92,16 +92,16 @@
             <Button Name="btnNext" Click="btnNext_Click" Content="Next" HorizontalAlignment="Left" Margin="93,243,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.517,-0.107" Grid.Row="1" Grid.Column="1"/>
             <Button Name="addPartion" Content="add Partion" Click="addPartion_Click" Margin="10,54,112,3"/>
             <Button x:Name="addFolder" Content="add Folder" Click="addFolder_Click" Margin="293,20,349,37" Grid.Column="1"/>
-            <Button x:Name="delete" Content="delete" Margin="387,20,255,37" Grid.Column="1"/>
-            <Button x:Name="cut" Content="cut" Margin="481,20,204,37" Grid.Column="1"/>
-            <Button x:Name="copy" Content="copy" Margin="533,20,152,37" Grid.Column="1"/>
-            <Button x:Name="paste" Content="paste"  Margin="584,20,101,37" Grid.Column="1"/>
+            <Button x:Name="delete" Click="delete_Click" Content="delete" Margin="387,20,255,37" Grid.Column="1"/>
+            <Button x:Name="cut" Click="cut_Click" Content="cut" Margin="481,20,204,37" Grid.Column="1"/>
+            <Button x:Name="copy" Click="Copy_Click" Content="copy" Margin="533,20,152,37" Grid.Column="1"/>
+            <Button x:Name="paste" Click="paste_Click" Content="paste"  Margin="584,20,101,37" Grid.Column="1"/>
             <Button Grid.Column="1" x:Name="btnClose" Width="32" Height="26" Content="X" HorizontalAlignment="Left" Margin="683,3,0,0" VerticalAlignment="Top" Click="btnClose_Click"/>
             <TextBox x:Name="txtDirFileSystem" 
                 Text="{Binding PathSys, UpdateSourceTrigger=PropertyChanged}"
                 Style="{StaticResource ModernTextbox}" 
                 HorizontalAlignment="Left" Margin="63,8,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225" Grid.Column="1" Height="42"/>
-            <Button x:Name="btnBackFileSystem" Click="btnBack_Click" Content="back" HorizontalAlignment="Left" Margin="25,21,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.517,-0.107" Grid.Column="1"/>
+            <Button x:Name="btnBackFileSystem" Click="btnBackFileSystem_Click" Content="back" HorizontalAlignment="Left" Margin="25,21,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.517,-0.107" Grid.Column="1"/>
         </Grid>
 
     </Border>
