@@ -120,6 +120,8 @@ namespace FileExplorer.ViewModels
 
             IEnumerable<IPosition<string>> Children = PCtree.Children(p);
 
+            ClearFilesSystem();
+
             foreach (IPosition<string> child in Children)
             {
 
@@ -129,7 +131,15 @@ namespace FileExplorer.ViewModels
         }
         public void NavigateFromModel(IPosition<string> p)
         {
+
+            ClearFilesSystem();
             IEnumerable<IPosition<string>> Children = PCtree.Children(p);
+            foreach (IPosition<string> child in Children)
+            {
+
+                FilesControlSystem fc = CreateFileControl(child);
+                AddFile(fc);
+            }
         }
 
 
@@ -152,6 +162,10 @@ namespace FileExplorer.ViewModels
         public void SetupFileControlCallbacks(FilesControlSystem fc)
         {
             fc.NavigateToPathCallback = NavigateFromModel;
+        }
+        public void ClearFilesSystem()
+        {
+            FileItemsSystem.Clear();
         }
 
         // file Explorer

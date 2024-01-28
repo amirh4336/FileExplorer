@@ -1,6 +1,5 @@
 ﻿using FileExplorer.Core;
 using FileExplorer.MWM.View;
-using FileExplorer.MWM.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +20,7 @@ using System.Net.Http.Json;
 using System.Windows.Documents;
 using System.Text;
 using DsProject.TreeStructure;
+using DsProject.MWM.View;
 
 namespace FileExplorer
 {
@@ -105,9 +105,11 @@ namespace FileExplorer
             OpenModal();
 
 
-            PCTree.AddChild(treeRoot , "vulme 1");
-            PCTree.AddChild(treeRoot, "vulme 2");
-            PCTree.AddChild(treeRoot, "vulme 3");
+            //PCTree.AddChild(treeRoot , "vulme 1");
+            //PCTree.AddChild(treeRoot, "vulme 2");
+            //IPosition<string> oneChild = PCTree.AddChild(treeRoot, "vulme 3");
+
+            //PCTree.AddChild(oneChild, "vulme 3asdfadsfasdf");
 
 
             txtDir.Text = treeRoot.Element;
@@ -172,7 +174,7 @@ namespace FileExplorer
             Close();
             //Application.Current.Shutdown();
         }
-        // showing Modal Func 
+        // showing Modals Func 
         private void OpenModal()
         {
             CreateDataBase createDataBase = new CreateDataBase(this);
@@ -210,6 +212,21 @@ namespace FileExplorer
             }
         }
 
+
+        private void OpenPartionnModal()
+        {
+            AddPartions addPartions = new AddPartions(this);
+            addPartions.ShowDialog();
+            if (addPartions.Success)
+            {
+                int sizePart = int.Parse(addPartions.InputSize);
+                string namePart = addPartions.InputName;
+
+                PCTree.AddChild(PCTree.Root, namePart);
+            }
+        }
+
+
         private void txtDir_TextChanged(object sender, TextChangedEventArgs e)
         {
             
@@ -228,6 +245,11 @@ namespace FileExplorer
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
             Model.BtnNext_Click();
+        }
+
+        private void addPartion_Click(object sender, RoutedEventArgs e)
+        {
+            OpenPartionnModal();
         }
     }
 }
