@@ -25,6 +25,8 @@ namespace FileExplorer.ViewModels
 
         public IPosition<ElementItem> CutPosition;
 
+        public ElementItem File;
+
         public GeneralTree<ElementItem> PCtree;
 
         private string pathWaySys = "";
@@ -44,6 +46,7 @@ namespace FileExplorer.ViewModels
 
         // file Explorer
         public ObservableCollection<FilesControl> FileItems { get; set; }
+                                     
 
 
         Stack<string> stackLastPrev = new Stack<string>();
@@ -247,6 +250,7 @@ namespace FileExplorer.ViewModels
         {
             FilesControl fc = new FilesControl(fModel);
             SetupFileControlCallbacks(fc);
+            fc.SelectedItemCallback = SelectItem;
             return fc;
         }
 
@@ -284,6 +288,13 @@ namespace FileExplorer.ViewModels
                 stackLastPrev.Push(stackLastNext.Pop());
                 TryNavigateToPath("");
             }
+        }
+
+        public void SelectItem(FileModel select)
+        {
+            ElementItem target = new ElementItem(select.Name, select.Path);
+
+            File = target;
         }
 
         // copy past cut add file System
@@ -386,10 +397,21 @@ namespace FileExplorer.ViewModels
             {
                 PCtree.Cut(CutPosition, ParentNode);
             }
+            
 
 
             CopyPosition = null;
             CutPosition = null;
+            Refresh();
+        }
+
+        public void ImportFile()
+        {
+            if (File != null)
+            {
+                PCtree.AddChild(ParentNode, File);
+                File = null;
+            }
             Refresh();
         }
 

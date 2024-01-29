@@ -313,5 +313,10 @@ namespace FileExplorer
             if (Model.ParentNode != PCTree.Root && Model.ParentNode != null)
                 OpenTextFile();
         }
+
+        private void ImportFile_Click(object sender, RoutedEventArgs e)
+        {
+            Model.ImportFile();
+        }
     }
 }
