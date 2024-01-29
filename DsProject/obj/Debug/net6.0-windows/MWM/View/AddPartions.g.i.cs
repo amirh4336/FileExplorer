@@ -85,7 +85,7 @@ namespace DsProject.MWM.View {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/DsProject;V1.0.0.0;component/mwm/view/addpartions.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/DsProject;component/mwm/view/addpartions.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\MWM\View\AddPartions.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

@@ -20,6 +20,8 @@ using System.Windows.Documents;
 using System.Text;
 using DsProject.TreeStructure;
 using DsProject.MWM.View;
+    using static DsProject.TreeStructure.GeneralTree<DsProject.TreeStructure.ElementItem>;
+using System.Linq;
 
 namespace FileExplorer
 {
@@ -30,38 +32,18 @@ namespace FileExplorer
 
 
 
-    public class Purchase
+    public class jsonTreeNode
     {
-        public string? ProductName { get; set; }
-        public DateTime DateTime { get; set; }
+        public ElementItem Element { get; set; }
+        public IEnumerable<jsonTreeNode> Children { get; set; }
 
-        public Decimal ProductPrice { get; set; }
+        public jsonTreeNode() { }
     }
+
 
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
-        Purchase purchase = new Purchase
-        {
-            ProductName = "amir Hossien",
-            DateTime = DateTime.UtcNow,
-            ProductPrice = 2.49m
-        };
-
-        //public static int CalculateJsonSize(object obj)
-        //{
-        //    var options = new JsonSerializerOptions
-        //    {
-        //        WriteIndented = true
-        //    };
-
-        //    using var stream = new MemoryStream();
-        //    using var writer = new Utf8JsonWriter(stream);
-        //    JsonSerializer.Serialize(writer, obj, options);
-        //    writer.Flush();
-
-        //    return (int)stream.Length;
-        //}
 
 
 
@@ -83,6 +65,14 @@ namespace FileExplorer
         public MainWindow()
         {
 
+            string filePath = Environment.CurrentDirectory;
+            string filePathWithFileName = System.IO.Path.Combine(filePath, "TreeJson.json");
+
+            if (File.Exists(filePathWithFileName))
+            {
+                LoadTreeFromJsonFile(filePathWithFileName);
+            }
+
             IPosition<ElementItem> treeRoot = PCTree.Root;
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(Window_Loaded);
@@ -96,13 +86,6 @@ namespace FileExplorer
             IPosition<ElementItem> treeRoot = PCTree.Root;
             // for showing Modal
             OpenModal();
-
-
-            //PCTree.AddChild(treeRoot , "vulme 1");
-            //PCTree.AddChild(treeRoot, "vulme 2");
-            //IPosition<string> oneChild = PCTree.AddChild(treeRoot, "vulme 3");
-
-            //PCTree.AddChild(oneChild, "vulme 3asdfadsfasdf");
 
 
             txtDir.Text = treeRoot.Element.Name;
@@ -122,16 +105,20 @@ namespace FileExplorer
             };
             dynamicFileSystem.Children.Add(rbFile);
 
-            foreach (IPosition<string> child in PCTree.Children(treeRoot))
+            foreach (IPosition<ElementItem> child in PCTree.Children(treeRoot))
             {
 
                 RadioButton rb = new RadioButton();
-                rb.Content = child.Element;
+                rb.Content = child.Element.Name;
                 rb.Height = 50;
                 rb.Foreground = new SolidColorBrush(Colors.White);
                 rb.FontSize = 14;
                 rb.Style = (Style)FindResource("MenuButtomTheme");
-                dynamicVolumes.Children.Add(rb);
+                rb.Click += (sender, e) =>
+                {
+                    Model.NavigateFromModel(child);
+                };
+                dynamicFileSystem.Children.Add(rb);
             }
 
             //dynamicFileSystem.Children.Add();
@@ -158,8 +145,58 @@ namespace FileExplorer
             DragMove();
         }
 
+        // serilize and deserilize 
+        private void LoadTreeFromJsonFile(string filePath)
+        {
+            var json = File.ReadAllText(filePath);
+
+            jsonTreeNode asd = System.Text.Json.JsonSerializer.Deserialize<jsonTreeNode>(json);
+
+            GeneralTree<ElementItem> tempTree = new GeneralTree<ElementItem>(new ElementItem("THIS PC"));
+            foreach (jsonTreeNode item in asd.Children)
+                ConvertJsonTreeToTree(tempTree, tempTree.Root, item.Element, item.Children);
+            PCTree = tempTree;
+        }
+
+        private void ConvertJsonTreeToTree(GeneralTree<ElementItem> tree, IPosition<ElementItem> parentNode, ElementItem element, IEnumerable<jsonTreeNode> children)
+        {
+            IPosition<ElementItem> node = tree.AddChild(parentNode, element);
+            foreach (jsonTreeNode item in children)
+            {
+                ConvertJsonTreeToTree(tree, node, item.Element, item.Children);
+            }
+        }
+
+
+        private string ConvertTreeToJson(GeneralTree<ElementItem> tree)
+        {
+            jsonTreeNode jsonTree = ConvertNodeToJson(tree.Root);
+
+
+            return System.Text.Json.JsonSerializer.Serialize(jsonTree);
+        }
+
+        private jsonTreeNode ConvertNodeToJson(IPosition<ElementItem> node)
+        {
+            IEnumerable<jsonTreeNode> arr = PCTree.Children(node).Select(child => ConvertNodeToJson(child));
+
+            return new jsonTreeNode { Element = node.Element, Children = arr };
+        }
+
+        private void SaveTreeToJsonFile()
+        {
+            // Convert the general tree to a JSON representation
+            string json = ConvertTreeToJson(PCTree);
+
+            // Specify the JSON file path
+            string filePath = Environment.CurrentDirectory;
+            string filePathWithFileName = System.IO.Path.Combine(filePath, "TreeJson.json");
+            File.WriteAllText(filePathWithFileName, json);
+        }
+
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            SaveTreeToJsonFile();
             Close();
             //Application.Current.Shutdown();
         }

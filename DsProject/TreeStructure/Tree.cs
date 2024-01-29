@@ -173,12 +173,13 @@ namespace DsProject.TreeStructure
             throw new NotImplementedException();
         }
 
-        public void AddChild(IPosition<E> p, E e)
+        public IPosition<E> AddChild(IPosition<E> p, E e)
         {
             Node parent = Validate(p);
             Node child = CreateNode(e, parent, null);
             parent.Children.Add(child);
             size++;
+            return child;
         }
 
         public void Delete(IPosition<E> p)
