@@ -407,7 +407,7 @@ namespace FileExplorer.ViewModels
 
         public void ImportFile()
         {
-            if (File != null)
+            if (File != null && ParentNode != PCtree.Root)
             {
                 PCtree.AddChild(ParentNode, File);
                 File = null;
