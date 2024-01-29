@@ -280,6 +280,14 @@ namespace FileExplorer.ViewModels
             Refresh();
         }
 
+
+        public void AddFile(ElementItem el)
+        {
+            if (ParentNode != PCtree.Root)
+                PCtree.AddChild(ParentNode, el);
+            Refresh();
+        }
+
         public string ShowingPath()
         {
             List<string> pathNodes = new List<string>();

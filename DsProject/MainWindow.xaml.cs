@@ -225,6 +225,27 @@ namespace FileExplorer
             }
         }
 
+        private void OpenTextFile()
+        {
+
+            string currentDir = Environment.CurrentDirectory;
+
+            CreateTextFile createTextFile = new CreateTextFile(this);
+            createTextFile.ShowDialog();
+            if (createTextFile.Success)
+            {
+                string nameText = $"{createTextFile.Input}.txt";
+
+                string PathText = $"{currentDir}/{nameText}";
+
+                File.WriteAllText(PathText, PathText);
+
+                ElementItem element = new ElementItem(nameText, PathText);
+
+                Model.AddFile(element);
+            }
+        }
+
         // btns
 
 
@@ -250,8 +271,8 @@ namespace FileExplorer
 
         private void addPartion_Click(object sender, RoutedEventArgs e)
         {
-            
-                OpenPartionnModal();
+
+            OpenPartionnModal();
         }
 
         private void addFolder_Click(object sender, RoutedEventArgs e)
@@ -289,7 +310,8 @@ namespace FileExplorer
 
         private void AddFileTxt_Click(object sender, RoutedEventArgs e)
         {
-
+            if (Model.ParentNode != PCTree.Root && Model.ParentNode != null)
+                OpenTextFile();
         }
     }
 }
