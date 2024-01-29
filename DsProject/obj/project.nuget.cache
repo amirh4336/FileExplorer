@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "yll1s5uDvL1rtaCq6cOq55PnWH4iQFcG51WJNvzlaXk6BdqNkL77FyPPK4NWLs4kZM0JOWPKi8ctEuzI3qHZvg==",
+  "dgSpecHash": "jQvJ0WQQhBK8athYl9kq7ik6M+vLLcxEyjtyLkVKT5gB0GPFrX+z5UCDl4QIJTouuGmw5s91a4GXcL3aDwkrvA==",
   "success": true,
-  "projectFilePath": "D:\\testExp\\DsProject\\DsProject.csproj",
+  "projectFilePath": "C:\\Users\\Sahand-Pc\\Desktop\\NewFolder\\FileExplorer\\DsProject\\DsProject.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\smart\\.nuget\\packages\\microsoft.win32.systemevents\\8.0.0\\microsoft.win32.systemevents.8.0.0.nupkg.sha512",
-    "C:\\Users\\smart\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
-    "C:\\Users\\smart\\.nuget\\packages\\system.drawing.common\\8.0.1\\system.drawing.common.8.0.1.nupkg.sha512"
+    "C:\\Users\\Sahand-Pc\\.nuget\\packages\\microsoft.win32.systemevents\\8.0.0\\microsoft.win32.systemevents.8.0.0.nupkg.sha512",
+    "C:\\Users\\Sahand-Pc\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\Sahand-Pc\\.nuget\\packages\\system.drawing.common\\8.0.1\\system.drawing.common.8.0.1.nupkg.sha512"
   ],
   "logs": []
 }

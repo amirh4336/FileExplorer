@@ -20,6 +20,8 @@ using System.Windows.Documents;
 using System.Text;
 using DsProject.TreeStructure;
 using DsProject.MWM.View;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace FileExplorer
 {
@@ -158,8 +160,55 @@ namespace FileExplorer
             DragMove();
         }
 
+        private void SaveTreeToJsonFile()
+        {
+            // Convert the general tree to a JSON representation
+            string json = ConvertTreeToJson(PCTree);
+
+            // Specify the JSON file path
+            string filePath = Environment.CurrentDirectory;
+            string filePathWithFileName = System.IO.Path.Combine(filePath, "TEST.json");
+            if (File.Exists(filePathWithFileName))
+            {
+                LoadTreeFromJsonFile(filePathWithFileName);
+            }
+            else
+            {
+            File.WriteAllText(filePathWithFileName, json);
+            }
+        }
+
+
+
+        private GeneralTree<ElementItem> LoadTreeFromJsonFile(string filePath)
+        {
+                string json = File.ReadAllText(filePath);
+                GeneralTree<ElementItem> tree = JsonConvert.DeserializeObject<GeneralTree<ElementItem>>(json);
+                return tree;
+        }
+
+
+        private string ConvertTreeToJson(GeneralTree<ElementItem> tree)
+        {
+            var jsonTree = new
+            {
+                Root = ConvertNodeToJson(tree.Root)
+            };
+            return JsonConvert.SerializeObject(jsonTree, Formatting.Indented);
+        }
+
+        private object ConvertNodeToJson(IPosition<ElementItem> node)
+        {
+            return new
+            {
+                Name = node.Element.Name,
+                Children = PCTree.Children(node).Select(child => ConvertNodeToJson(child))
+            };
+        }
+
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            SaveTreeToJsonFile();
             Close();
             //Application.Current.Shutdown();
         }
