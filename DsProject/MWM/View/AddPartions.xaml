@@ -11,7 +11,7 @@
     <Grid>
         <TextBlock Text="name:" Foreground="Black" Margin="10,10,150,215"/>
         <TextBox x:Name="txtNameInput" TextChanged="txtNameInput_TextChanged" TextWrapping="Wrap"  Margin="10,40,10,171"/>
-        <TextBlock Text="size:" Margin="10,87,150,138"/>
+        <TextBlock Text="size(KB) :" Margin="10,87,150,138"/>
         <TextBox x:Name="txtSizeInput" TextChanged="txtSizeInput_TextChanged" TextWrapping="Wrap"  Margin="10,117,10,94"/>
         <Button x:Name="btnCancel" Content="Cancel" Click="btnCancel_Click" HorizontalAlignment="Left" Margin="125,186,0,0"  VerticalAlignment="Top" Width="103" Height="26"/>
         <Button x:Name="btnOk" Content="Ok"  Click="btnOk_Click" HorizontalAlignment="Left" Margin="10,186,0,0" VerticalAlignment="Top" IsEnabled="False" Width="103" Height="26"/>

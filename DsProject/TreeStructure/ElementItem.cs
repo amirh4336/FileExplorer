@@ -11,7 +11,7 @@ namespace DsProject.TreeStructure
         public string Name { get; set; }
         public string Path { get; set; }
 
-        public int? Size { get; set; }
+        public long? Size { get; set; }
 
         public ElementItem() { }
 
@@ -26,10 +26,9 @@ namespace DsProject.TreeStructure
             Path = path;
         }
 
-        public ElementItem(string name, string path , int size)
+        public ElementItem(string name , long size)
         {
             Name = name;
-            Path = path;
             Size = size;
         }
     }

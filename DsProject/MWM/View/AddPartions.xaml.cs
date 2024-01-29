@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,10 +25,12 @@ namespace DsProject.MWM.View
         public string InputName { get; set; }
         public string InputSize { get; set; }
 
+        long SpaceLeft { get; set; }
 
-        public AddPartions(Window parentWindow)
+        public AddPartions(Window parentWindow, long blankSize)
         {
             Owner = parentWindow;
+            SpaceLeft = blankSize;
             InitializeComponent();
         }
 
@@ -65,7 +68,15 @@ namespace DsProject.MWM.View
         {
             if (!string.IsNullOrEmpty(txtSizeInput.Text) && !string.IsNullOrEmpty(txtNameInput.Text) && Int32.TryParse(txtSizeInput.Text, out int n))
             {
-                btnOk.IsEnabled = true;
+                long sizePart = long.Parse(txtSizeInput.Text) * 1024;
+                if (SpaceLeft >= sizePart)
+                {
+                    btnOk.IsEnabled = true;
+                }
+                else
+                {
+                    btnOk.IsEnabled = false;
+                }
             }
             else
             {

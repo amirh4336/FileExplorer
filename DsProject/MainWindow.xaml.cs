@@ -20,7 +20,7 @@ using System.Windows.Documents;
 using System.Text;
 using DsProject.TreeStructure;
 using DsProject.MWM.View;
-    using static DsProject.TreeStructure.GeneralTree<DsProject.TreeStructure.ElementItem>;
+using static DsProject.TreeStructure.GeneralTree<DsProject.TreeStructure.ElementItem>;
 using System.Linq;
 
 namespace FileExplorer
@@ -32,7 +32,7 @@ namespace FileExplorer
 
 
 
-    
+
 
 
     public partial class MainWindow : Window, INotifyPropertyChanged
@@ -69,10 +69,12 @@ namespace FileExplorer
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Specify the JSON file path
-            IPosition<ElementItem> treeRoot = PCTree.Root;
             // for showing Modal
             OpenModal();
+
+
+            // Specify the JSON file path
+            IPosition<ElementItem> treeRoot = PCTree.Root;
 
 
             txtDir.Text = treeRoot.Element.Name;
@@ -149,12 +151,14 @@ namespace FileExplorer
 
             JsonTreeNode objectTree = System.Text.Json.JsonSerializer.Deserialize<JsonTreeNode>(json);
 
-            if (objectTree.Children != null ) { 
-            GeneralTree<ElementItem> tempTree = new GeneralTree<ElementItem>(new ElementItem("THIS PC"));
-            foreach (JsonTreeNode item in objectTree.Children)
-                ConvertJsonTreeToTree(tempTree, tempTree.Root, item.Element, item.Children);
-            PCTree = tempTree;
-            } else
+            if (objectTree.Children != null)
+            {
+                GeneralTree<ElementItem> tempTree = new GeneralTree<ElementItem>(new ElementItem("THIS PC"));
+                foreach (JsonTreeNode item in objectTree.Children)
+                    ConvertJsonTreeToTree(tempTree, tempTree.Root, item.Element, item.Children);
+                PCTree = tempTree;
+            }
+            else
             {
                 Window errorWindow = new Window
                 {
@@ -214,50 +218,41 @@ namespace FileExplorer
         // showing Modals Func 
         private void OpenModal()
         {
+
             CreateDataBase createDataBase = new CreateDataBase(this);
             createDataBase.ShowDialog();
             if (createDataBase.Success)
             {
-                //txtSearch.Text = createDataBase.Input;
-                //string filePath = "data.json";
-
-                //// Specify the desired file size in bytes
-
-                //// Generate dummy data to fill the file
-                //string dummyData = GenerateDummyData(fileSizeInBytes);
-
-                //// Write the dummy data to the file
-                //File.WriteAllText(filePath, dummyData);
-
-                string path = "YourFilePath.json";
                 long targetSize = int.Parse(createDataBase.Input) * 1024; // 1KB
-                //int targetSize = 1024; // Target size in bytes
-
-                using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
-                {
-                    while (fs.Length < targetSize)
-                    {
-                        var data = new { Key = "Value" }; // Your data here
-                        string json = JsonConvert.SerializeObject(data);
-                        byte[] bytes = Encoding.UTF8.GetBytes(json);
-                        fs.Write(bytes, 0, bytes.Length);
-                    }
-                }
-
+                GeneralTree<ElementItem> tenpTree = new GeneralTree<ElementItem>(new ElementItem("THIS PC" , targetSize));
+                PCTree = tenpTree;
+                Model.TryNavigateWithTree(PCTree, PCTree.Root);
             }
         }
 
 
         private void OpenPartionnModal()
         {
-            AddPartions addPartions = new AddPartions(this);
+            IPosition<ElementItem> root = PCTree.Root;
+
+            long rootSize = root.Element.Size ?? 0;
+            long partionsSize = 0;
+            foreach (IPosition<ElementItem> item in PCTree.Children(root))
+            {
+                partionsSize += item.Element.Size ?? 0;
+            }
+
+            long blankSpace = rootSize - partionsSize;
+
+
+            AddPartions addPartions = new AddPartions(this , blankSpace);
             addPartions.ShowDialog();
             if (addPartions.Success)
             {
-                int sizePart = int.Parse(addPartions.InputSize);
+                long sizePart = long.Parse(addPartions.InputSize) * 1024;
                 string namePart = addPartions.InputName;
 
-                Model.AddPartion(namePart);
+                Model.AddPartion(namePart , sizePart);
             }
         }
 
@@ -375,7 +370,7 @@ namespace FileExplorer
             if (file != null && File.Exists(file.Path) && file.Path.Contains(".json"))
             {
                 LoadTreeFromJsonFile(file.Path);
-                Model.TryNavigateWithTree(PCTree,PCTree.Root);
+                Model.TryNavigateWithTree(PCTree, PCTree.Root);
                 SideBarBtn();
             }
         }

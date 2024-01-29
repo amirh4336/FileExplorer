@@ -299,9 +299,9 @@ namespace FileExplorer.ViewModels
 
         // copy past cut add file System
 
-        public void AddPartion(string namePartion)
+        public void AddPartion(string namePartion , long size)
         {
-            PCtree.AddChild(PCtree.Root, new ElementItem(namePartion));
+            PCtree.AddChild(PCtree.Root, new ElementItem(namePartion , size));
             Refresh();
         }
 
