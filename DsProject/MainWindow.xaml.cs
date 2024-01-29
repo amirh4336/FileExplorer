@@ -32,24 +32,11 @@ namespace FileExplorer
 
 
 
-    public class jsonTreeNode
-    {
-        public ElementItem Element { get; set; }
-        public IEnumerable<jsonTreeNode> Children { get; set; }
-
-        public jsonTreeNode() { }
-    }
+    
 
 
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-
-
-
-
-
-
-
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -90,7 +77,35 @@ namespace FileExplorer
 
             txtDir.Text = treeRoot.Element.Name;
 
+            SideBarBtn();
 
+
+
+
+            //dynamicFileSystem.Children.Add();
+
+            foreach (string s in Directory.GetLogicalDrives())
+            {
+
+                RadioButton rb = new RadioButton();
+                rb.Content = s;
+                rb.Height = 50;
+                rb.Foreground = new SolidColorBrush(Colors.White);
+                rb.FontSize = 14;
+                rb.Style = (Style)FindResource("MenuButtomTheme");
+                rb.Click += (sender, e) =>
+                {
+                    Model.TryNavigateToPath($@"{s}");
+                };
+                dynamicVolumes.Children.Add(rb);
+            }
+        }
+
+        // side Bar button 
+        private void SideBarBtn()
+        {
+            IPosition<ElementItem> treeRoot = PCTree.Root;
+            dynamicFileSystem.Children.Clear();
 
 
             RadioButton rbFile = new RadioButton();
@@ -120,24 +135,6 @@ namespace FileExplorer
                 };
                 dynamicFileSystem.Children.Add(rb);
             }
-
-            //dynamicFileSystem.Children.Add();
-
-            foreach (string s in Directory.GetLogicalDrives())
-            {
-
-                RadioButton rb = new RadioButton();
-                rb.Content = s;
-                rb.Height = 50;
-                rb.Foreground = new SolidColorBrush(Colors.White);
-                rb.FontSize = 14;
-                rb.Style = (Style)FindResource("MenuButtomTheme");
-                rb.Click += (sender, e) =>
-                {
-                    Model.TryNavigateToPath($@"{s}");
-                };
-                dynamicVolumes.Children.Add(rb);
-            }
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -150,18 +147,32 @@ namespace FileExplorer
         {
             var json = File.ReadAllText(filePath);
 
-            jsonTreeNode asd = System.Text.Json.JsonSerializer.Deserialize<jsonTreeNode>(json);
+            JsonTreeNode objectTree = System.Text.Json.JsonSerializer.Deserialize<JsonTreeNode>(json);
 
+            if (objectTree.Children != null ) { 
             GeneralTree<ElementItem> tempTree = new GeneralTree<ElementItem>(new ElementItem("THIS PC"));
-            foreach (jsonTreeNode item in asd.Children)
+            foreach (JsonTreeNode item in objectTree.Children)
                 ConvertJsonTreeToTree(tempTree, tempTree.Root, item.Element, item.Children);
             PCTree = tempTree;
+            } else
+            {
+                Window errorWindow = new Window
+                {
+                    Title = "Error",
+                    Content = "the json file has not contain tree structur",
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                };
+
+                // Show the window modally
+                Nullable<bool> dialogResult = errorWindow.ShowDialog();
+            }
+
         }
 
-        private void ConvertJsonTreeToTree(GeneralTree<ElementItem> tree, IPosition<ElementItem> parentNode, ElementItem element, IEnumerable<jsonTreeNode> children)
+        private void ConvertJsonTreeToTree(GeneralTree<ElementItem> tree, IPosition<ElementItem> parentNode, ElementItem element, IEnumerable<JsonTreeNode> children)
         {
             IPosition<ElementItem> node = tree.AddChild(parentNode, element);
-            foreach (jsonTreeNode item in children)
+            foreach (JsonTreeNode item in children)
             {
                 ConvertJsonTreeToTree(tree, node, item.Element, item.Children);
             }
@@ -170,17 +181,17 @@ namespace FileExplorer
 
         private string ConvertTreeToJson(GeneralTree<ElementItem> tree)
         {
-            jsonTreeNode jsonTree = ConvertNodeToJson(tree.Root);
+            JsonTreeNode jsonTree = ConvertNodeToJson(tree.Root);
 
 
             return System.Text.Json.JsonSerializer.Serialize(jsonTree);
         }
 
-        private jsonTreeNode ConvertNodeToJson(IPosition<ElementItem> node)
+        private JsonTreeNode ConvertNodeToJson(IPosition<ElementItem> node)
         {
-            IEnumerable<jsonTreeNode> arr = PCTree.Children(node).Select(child => ConvertNodeToJson(child));
+            IEnumerable<JsonTreeNode> arr = PCTree.Children(node).Select(child => ConvertNodeToJson(child));
 
-            return new jsonTreeNode { Element = node.Element, Children = arr };
+            return new JsonTreeNode { Element = node.Element, Children = arr };
         }
 
         private void SaveTreeToJsonFile()
@@ -310,6 +321,7 @@ namespace FileExplorer
         {
 
             OpenPartionnModal();
+            SideBarBtn();
         }
 
         private void addFolder_Click(object sender, RoutedEventArgs e)
@@ -343,6 +355,7 @@ namespace FileExplorer
         private void delete_Click(object sender, RoutedEventArgs e)
         {
             Model.DeleteItem();
+            SideBarBtn();
         }
 
         private void AddFileTxt_Click(object sender, RoutedEventArgs e)
@@ -354,6 +367,17 @@ namespace FileExplorer
         private void ImportFile_Click(object sender, RoutedEventArgs e)
         {
             Model.ImportFile();
+        }
+
+        private void ImportTree_Click(object sender, RoutedEventArgs e)
+        {
+            ElementItem file = Model.File;
+            if (file != null && File.Exists(file.Path) && file.Path.Contains(".json"))
+            {
+                LoadTreeFromJsonFile(file.Path);
+                Model.TryNavigateWithTree(PCTree,PCTree.Root);
+                SideBarBtn();
+            }
         }
     }
 }
