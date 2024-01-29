@@ -95,7 +95,7 @@ namespace FileExplorer.ViewModels
             {
                 // Open the file
                 MessageBox.Show($"Opening @{path}");
-                Process.Start(@path);
+                //Process.Start(@path);
                 //Process.Start(@"D:\Screenshot 2024-01-10 125229.png");
                 try
                 {
@@ -141,40 +141,62 @@ namespace FileExplorer.ViewModels
         {
 
             PCtree = tempTree;
-            ParentNode = p;
 
-            PathSys = ShowingPath();
-
-            IEnumerable<IPosition<ElementItem>> Children = PCtree.Children(p);
-
-            ClearFilesSystem();
-
-            foreach (IPosition<ElementItem> child in Children)
+            if (p.Element.Path != null)
+            {
+                MessageBox.Show($"Opening @{p.Element.Path}");
+            }
+            else
             {
 
-                FilesControlSystem fc = CreateFileControl(child);
-                AddFile(fc);
+                ParentNode = p;
+                PathSys = ShowingPath();
+
+                IEnumerable<IPosition<ElementItem>> Children = PCtree.Children(p);
+
+                ClearFilesSystem();
+
+                foreach (IPosition<ElementItem> child in Children)
+                {
+
+                    FilesControlSystem fc = CreateFileControl(child);
+                    AddFile(fc);
+                }
+
             }
         }
         public void NavigateFromModel(IPosition<ElementItem> p)
         {
 
-            ParentNode = p;
-            PathSys = ShowingPath();
 
-            if (ParentNode == CutPosition)
+            if (p.Element.Path != null)
             {
-                CutPosition = null;
+                MessageBox.Show($"Opening @{p.Element.Path}");
+
+            }
+            else
+            {
+                ParentNode = p;
+
+                if (ParentNode == CutPosition)
+                {
+                    CutPosition = null;
+                }
+                PathSys = ShowingPath();
+
+                IEnumerable<IPosition<ElementItem>> Children = PCtree.Children(p);
+
+                ClearFilesSystem();
+
+                foreach (IPosition<ElementItem> child in Children)
+                {
+
+                    FilesControlSystem fc = CreateFileControl(child);
+                    AddFile(fc);
+                }
+
             }
 
-            ClearFilesSystem();
-            IEnumerable<IPosition<ElementItem>> Children = PCtree.Children(p);
-            foreach (IPosition<ElementItem> child in Children)
-            {
-
-                FilesControlSystem fc = CreateFileControl(child);
-                AddFile(fc);
-            }
         }
 
 
@@ -268,7 +290,7 @@ namespace FileExplorer.ViewModels
 
         public void AddPartion(string namePartion)
         {
-            PCtree.AddChild(PCtree.Root,  new ElementItem (namePartion));
+            PCtree.AddChild(PCtree.Root, new ElementItem(namePartion));
             Refresh();
         }
 
@@ -327,8 +349,8 @@ namespace FileExplorer.ViewModels
         {
             if (SelectedPosition != null)
             {
-            PCtree.Delete(SelectedPosition);
-                
+                PCtree.Delete(SelectedPosition);
+
             }
             Refresh();
         }
