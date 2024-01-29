@@ -17,15 +17,15 @@ namespace FileExplorer.ViewModels
         // file system
         public ObservableCollection<FilesControlSystem> FileItemsSystem { get; set; }
 
-        public IPosition<string> ParentNode;
+        public IPosition<ElementItem> ParentNode;
 
-        public IPosition<string> SelectedPosition;
+        public IPosition<ElementItem> SelectedPosition;
 
-        public IPosition<string> CopyPosition;
+        public IPosition<ElementItem> CopyPosition;
 
-        public IPosition<string> CutPosition;
+        public IPosition<ElementItem> CutPosition;
 
-        public GeneralTree<string> PCtree;
+        public GeneralTree<ElementItem> PCtree;
 
         private string pathWaySys = "";
 
@@ -137,7 +137,7 @@ namespace FileExplorer.ViewModels
 
         // file System
 
-        public void TryNavigateWithTree(GeneralTree<string> tempTree, IPosition<string> p)
+        public void TryNavigateWithTree(GeneralTree<ElementItem> tempTree, IPosition<ElementItem> p)
         {
 
             PCtree = tempTree;
@@ -145,18 +145,18 @@ namespace FileExplorer.ViewModels
 
             PathSys = ShowingPath();
 
-            IEnumerable<IPosition<string>> Children = PCtree.Children(p);
+            IEnumerable<IPosition<ElementItem>> Children = PCtree.Children(p);
 
             ClearFilesSystem();
 
-            foreach (IPosition<string> child in Children)
+            foreach (IPosition<ElementItem> child in Children)
             {
 
                 FilesControlSystem fc = CreateFileControl(child);
                 AddFile(fc);
             }
         }
-        public void NavigateFromModel(IPosition<string> p)
+        public void NavigateFromModel(IPosition<ElementItem> p)
         {
 
             ParentNode = p;
@@ -168,8 +168,8 @@ namespace FileExplorer.ViewModels
             }
 
             ClearFilesSystem();
-            IEnumerable<IPosition<string>> Children = PCtree.Children(p);
-            foreach (IPosition<string> child in Children)
+            IEnumerable<IPosition<ElementItem>> Children = PCtree.Children(p);
+            foreach (IPosition<ElementItem> child in Children)
             {
 
                 FilesControlSystem fc = CreateFileControl(child);
@@ -187,7 +187,7 @@ namespace FileExplorer.ViewModels
             FileItemsSystem.Add(file);
         }
 
-        public FilesControlSystem CreateFileControl(IPosition<string> fModel)
+        public FilesControlSystem CreateFileControl(IPosition<ElementItem> fModel)
         {
             FilesControlSystem fc = new FilesControlSystem(fModel);
             SetupFileControlCallbacks(fc);
@@ -268,7 +268,7 @@ namespace FileExplorer.ViewModels
 
         public void AddPartion(string namePartion)
         {
-            PCtree.AddChild(ParentNode, namePartion);
+            PCtree.AddChild(PCtree.Root,  new ElementItem (namePartion));
             Refresh();
         }
 
@@ -276,7 +276,7 @@ namespace FileExplorer.ViewModels
         public void AddFolder(string nameFolder)
         {
             if (ParentNode != PCtree.Root)
-                PCtree.AddChild(ParentNode, nameFolder);
+                PCtree.AddChild(ParentNode, new ElementItem(nameFolder));
             Refresh();
         }
 
@@ -284,11 +284,11 @@ namespace FileExplorer.ViewModels
         {
             List<string> pathNodes = new List<string>();
 
-            IPosition<string> position = ParentNode;
+            IPosition<ElementItem> position = ParentNode;
 
             while (position != null)
             {
-                pathNodes.Add(position.Element);
+                pathNodes.Add(position.Element.Name);
                 position = PCtree.Parent(position);
             }
 
@@ -302,7 +302,7 @@ namespace FileExplorer.ViewModels
 
         public void BackDirctory()
         {
-            IPosition<string> position = PCtree.Parent(ParentNode);
+            IPosition<ElementItem> position = PCtree.Parent(ParentNode);
 
             if (position != null)
             {
@@ -310,7 +310,7 @@ namespace FileExplorer.ViewModels
             }
         }
 
-        public void SelectItem(IPosition<string> select)
+        public void SelectItem(IPosition<ElementItem> select)
         {
             SelectedPosition = select;
         }

@@ -27,18 +27,18 @@ namespace DsProject.Files
             InitializeComponent();
         }
 
-        public IPosition<string> File
+        public IPosition<ElementItem> File
         {
-            get => this.DataContext as IPosition<string>;
+            get => this.DataContext as IPosition<ElementItem>;
             set => this.DataContext = value;
         }
 
         /// <summary>
         /// A callback used for telling 'something' to navigate to the path
         /// </summary>
-        public Action<IPosition<string>> NavigateToPathCallback { get; set; }
+        public Action<IPosition<ElementItem>> NavigateToPathCallback { get; set; }
 
-        public Action<IPosition<string>> SelectedItemCallback { get; set; }
+        public Action<IPosition<ElementItem>> SelectedItemCallback { get; set; }
 
         //public FilesControl()
         //{
@@ -46,10 +46,10 @@ namespace DsProject.Files
         //    File = new FileModel();
         //}
 
-        public FilesControlSystem(IPosition<string> fModel)
+        public FilesControlSystem(IPosition<ElementItem> fModel)
         {
             InitializeComponent();
-            TxtNameEl.Text = fModel.Element;
+            TxtNameEl.Text = fModel.Element.Name;
             File = fModel;
         }
 

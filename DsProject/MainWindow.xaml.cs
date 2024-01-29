@@ -71,7 +71,7 @@ namespace FileExplorer
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public GeneralTree<string> PCTree = new GeneralTree<string>("This PC");
+        public GeneralTree<ElementItem> PCTree = new GeneralTree<ElementItem>(new ElementItem("THIS PC"));
 
 
         public MainViewModel Model
@@ -83,7 +83,7 @@ namespace FileExplorer
         public MainWindow()
         {
 
-            IPosition<string> treeRoot = PCTree.Root;
+            IPosition<ElementItem> treeRoot = PCTree.Root;
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(Window_Loaded);
             Model.TryNavigateToPath("");
@@ -93,7 +93,7 @@ namespace FileExplorer
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Specify the JSON file path
-            IPosition<string> treeRoot = PCTree.Root;
+            IPosition<ElementItem> treeRoot = PCTree.Root;
             // for showing Modal
             OpenModal();
 
@@ -105,13 +105,13 @@ namespace FileExplorer
             //PCTree.AddChild(oneChild, "vulme 3asdfadsfasdf");
 
 
-            txtDir.Text = treeRoot.Element;
+            txtDir.Text = treeRoot.Element.Name;
 
 
 
 
             RadioButton rbFile = new RadioButton();
-            rbFile.Content = treeRoot.Element;
+            rbFile.Content = treeRoot.Element.Name;
             rbFile.Height = 50;
             rbFile.Foreground = new SolidColorBrush(Colors.White);
             rbFile.FontSize = 14;
