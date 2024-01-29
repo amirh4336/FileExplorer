@@ -63,7 +63,7 @@ namespace DsProject.MWM.View
 
         void inputValidate()
         {
-            if (!string.IsNullOrEmpty(txtSizeInput.Text) && !string.IsNullOrEmpty(txtNameInput.Text))
+            if (!string.IsNullOrEmpty(txtSizeInput.Text) && !string.IsNullOrEmpty(txtNameInput.Text) && Int32.TryParse(txtSizeInput.Text, out int n))
             {
                 btnOk.IsEnabled = true;
             }
