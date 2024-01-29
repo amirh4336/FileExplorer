@@ -118,7 +118,7 @@ namespace DsProject.TreeStructure
         private int size = 0;
 
 
-        protected class Node : IPosition<E>
+        public class Node : IPosition<E>
         {
             public E Element { get; internal set; }
             public Node Parent { get; internal set; }
@@ -173,12 +173,13 @@ namespace DsProject.TreeStructure
             throw new NotImplementedException();
         }
 
-        public void AddChild(IPosition<E> p, E e)
+        public IPosition<E> AddChild(IPosition<E> p, E e)
         {
             Node parent = Validate(p);
             Node child = CreateNode(e, parent, null);
             parent.Children.Add(child);
             size++;
+            return child;
         }
 
         public void Delete(IPosition<E> p)

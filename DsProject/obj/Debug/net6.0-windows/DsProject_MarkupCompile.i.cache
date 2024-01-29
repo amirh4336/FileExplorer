@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\Sahand-Pc\Desktop\NewFolder\FileExplorer\DsProject\obj\Debug\net6.0-windows\
+D:\testExp\DsProject\obj\Debug\net6.0-windows\
 DsProject
 none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
-C:\Users\Sahand-Pc\Desktop\NewFolder\FileExplorer\DsProject\App.xaml
+D:\testExp\DsProject\App.xaml
 9-221284050
 
 25-430390362
-1972012223411
+1971965216229
 Files\FilesControl.xaml;Files\FilesControlSystem.xaml;MainWindow.xaml;MWM\View\AddFolder.xaml;MWM\View\AddPartions.xaml;MWM\View\CreateDataBase.xaml;MWM\View\CreateTextFile.xaml;Theme\MenuBottomTheme.xaml;Theme\TextBoxTheme.xaml;
 
 True

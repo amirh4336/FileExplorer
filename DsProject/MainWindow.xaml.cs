@@ -22,6 +22,8 @@ using DsProject.TreeStructure;
 using DsProject.MWM.View;
 using System.Linq;
 using System.Xml.Linq;
+using System.Runtime.Serialization.Json;
+using static DsProject.TreeStructure.GeneralTree<DsProject.TreeStructure.ElementItem>;
 
 namespace FileExplorer
 {
@@ -30,25 +32,21 @@ namespace FileExplorer
     /// </summary>
     /// 
 
+    
 
 
-    public class Purchase
+
+    public class jsonTreeNode
     {
-        public string? ProductName { get; set; }
-        public DateTime DateTime { get; set; }
+        public ElementItem Element { get; set; }
+        public IEnumerable<jsonTreeNode> Children { get; set; }
 
-        public Decimal ProductPrice { get; set; }
+        public jsonTreeNode() { }
     }
 
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
-        Purchase purchase = new Purchase
-        {
-            ProductName = "amir Hossien",
-            DateTime = DateTime.UtcNow,
-            ProductPrice = 2.49m
-        };
 
         //public static int CalculateJsonSize(object obj)
         //{
@@ -76,6 +74,7 @@ namespace FileExplorer
         public GeneralTree<ElementItem> PCTree = new GeneralTree<ElementItem>(new ElementItem("THIS PC"));
 
 
+
         public MainViewModel Model
         {
             get => this.DataContext as MainViewModel;
@@ -84,8 +83,15 @@ namespace FileExplorer
 
         public MainWindow()
         {
+            string filePath = Environment.CurrentDirectory;
+            string filePathWithFileName = System.IO.Path.Combine(filePath, "TEST.json");
 
+            if (File.Exists(filePathWithFileName))
+            {
+                LoadTreeFromJsonFile(filePathWithFileName);
+            } 
             IPosition<ElementItem> treeRoot = PCTree.Root;
+
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(Window_Loaded);
             Model.TryNavigateToPath("");
@@ -98,14 +104,6 @@ namespace FileExplorer
             IPosition<ElementItem> treeRoot = PCTree.Root;
             // for showing Modal
             OpenModal();
-
-
-            //PCTree.AddChild(treeRoot , "vulme 1");
-            //PCTree.AddChild(treeRoot, "vulme 2");
-            //IPosition<string> oneChild = PCTree.AddChild(treeRoot, "vulme 3");
-
-            //PCTree.AddChild(oneChild, "vulme 3asdfadsfasdf");
-
 
             txtDir.Text = treeRoot.Element.Name;
 
@@ -124,19 +122,6 @@ namespace FileExplorer
             };
             dynamicFileSystem.Children.Add(rbFile);
 
-            foreach (IPosition<string> child in PCTree.Children(treeRoot))
-            {
-
-                RadioButton rb = new RadioButton();
-                rb.Content = child.Element;
-                rb.Height = 50;
-                rb.Foreground = new SolidColorBrush(Colors.White);
-                rb.FontSize = 14;
-                rb.Style = (Style)FindResource("MenuButtomTheme");
-                dynamicVolumes.Children.Add(rb);
-            }
-
-            //dynamicFileSystem.Children.Add();
 
             foreach (string s in Directory.GetLogicalDrives())
             {
@@ -168,42 +153,46 @@ namespace FileExplorer
             // Specify the JSON file path
             string filePath = Environment.CurrentDirectory;
             string filePathWithFileName = System.IO.Path.Combine(filePath, "TEST.json");
-            if (File.Exists(filePathWithFileName))
-            {
-                LoadTreeFromJsonFile(filePathWithFileName);
-            }
-            else
-            {
             File.WriteAllText(filePathWithFileName, json);
-            }
         }
 
 
 
-        private GeneralTree<ElementItem> LoadTreeFromJsonFile(string filePath)
+        private void LoadTreeFromJsonFile(string filePath)
         {
-                string json = File.ReadAllText(filePath);
-                GeneralTree<ElementItem> tree = JsonConvert.DeserializeObject<GeneralTree<ElementItem>>(json);
-                return tree;
+            var json = File.ReadAllText(filePath);
+
+            jsonTreeNode asd = System.Text.Json.JsonSerializer.Deserialize<jsonTreeNode>(json);
+
+            GeneralTree<ElementItem> tempTree = new GeneralTree<ElementItem>(new ElementItem("THIS PC"));
+            foreach (jsonTreeNode item in asd.Children)
+                ConvertJsonTreeToTree(tempTree, tempTree.Root, item.Element, item.Children);
+            PCTree = tempTree;
+        }
+
+        private void ConvertJsonTreeToTree(GeneralTree<ElementItem> tree  , IPosition<ElementItem> parentNode , ElementItem element , IEnumerable<jsonTreeNode> children)
+        {
+            IPosition<ElementItem> node = tree.AddChild(parentNode, element);
+            foreach (jsonTreeNode item in children)
+            {
+                ConvertJsonTreeToTree(tree , node, item.Element , item.Children);
+            }
         }
 
 
         private string ConvertTreeToJson(GeneralTree<ElementItem> tree)
         {
-            var jsonTree = new
-            {
-                Root = ConvertNodeToJson(tree.Root)
-            };
-            return JsonConvert.SerializeObject(jsonTree, Formatting.Indented);
+            jsonTreeNode jsonTree = ConvertNodeToJson(tree.Root);
+
+
+            return System.Text.Json.JsonSerializer.Serialize(jsonTree);
         }
 
-        private object ConvertNodeToJson(IPosition<ElementItem> node)
+        private jsonTreeNode ConvertNodeToJson(IPosition<ElementItem> node)
         {
-            return new
-            {
-                Name = node.Element.Name,
-                Children = PCTree.Children(node).Select(child => ConvertNodeToJson(child))
-            };
+            IEnumerable<jsonTreeNode> arr = PCTree.Children(node).Select(child => ConvertNodeToJson(child));
+
+            return new jsonTreeNode{ Element = node.Element , Children = arr};
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -232,7 +221,7 @@ namespace FileExplorer
 
                 string path = "YourFilePath.json";
                 long targetSize = int.Parse(createDataBase.Input) * 1024; // 1KB
-                //int targetSize = 1024; // Target size in bytes
+                                                                          //int targetSize = 1024; // Target size in bytes
 
                 using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
                 {
@@ -299,8 +288,8 @@ namespace FileExplorer
 
         private void addPartion_Click(object sender, RoutedEventArgs e)
         {
-            
-                OpenPartionnModal();
+
+            OpenPartionnModal();
         }
 
         private void addFolder_Click(object sender, RoutedEventArgs e)
