@@ -127,3 +127,5 @@ D:\testExp\DsProject\obj\Debug\net6.0-windows\MWM\View\AddPartions.g.cs
 D:\testExp\DsProject\obj\Debug\net6.0-windows\MWM\View\AddPartions.baml
 D:\testExp\DsProject\obj\Debug\net6.0-windows\MWM\View\AddFolder.g.cs
 D:\testExp\DsProject\obj\Debug\net6.0-windows\MWM\View\AddFolder.baml
+D:\testExp\DsProject\obj\Debug\net6.0-windows\MWM\View\CreateTextFile.g.cs
+D:\testExp\DsProject\obj\Debug\net6.0-windows\MWM\View\CreateTextFile.baml

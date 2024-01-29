@@ -286,5 +286,10 @@ namespace FileExplorer
         {
             Model.DeleteItem();
         }
+
+        private void AddFileTxt_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

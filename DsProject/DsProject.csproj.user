@@ -19,6 +19,9 @@
     <Compile Update="MWM\View\CreateDataBase.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="MWM\View\CreateTextFile.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Files\FilesControlSystem.xaml">
@@ -34,6 +37,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MWM\View\CreateDataBase.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MWM\View\CreateTextFile.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Theme\MenuBottomTheme.xaml">

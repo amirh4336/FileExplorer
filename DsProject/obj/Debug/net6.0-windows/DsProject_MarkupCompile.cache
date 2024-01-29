@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 D:\testExp\DsProject\App.xaml
-8-262513103
+9-221284050
 
-22288608995
+23107772372
 1971965216229
-Files\FilesControl.xaml;Files\FilesControlSystem.xaml;MainWindow.xaml;MWM\View\AddFolder.xaml;MWM\View\AddPartions.xaml;MWM\View\CreateDataBase.xaml;Theme\MenuBottomTheme.xaml;Theme\TextBoxTheme.xaml;
+Files\FilesControl.xaml;Files\FilesControlSystem.xaml;MainWindow.xaml;MWM\View\AddFolder.xaml;MWM\View\AddPartions.xaml;MWM\View\CreateDataBase.xaml;MWM\View\CreateTextFile.xaml;Theme\MenuBottomTheme.xaml;Theme\TextBoxTheme.xaml;
 
 False
 
