@@ -52,13 +52,7 @@ namespace FileExplorer
         public MainWindow()
         {
 
-            string filePath = Environment.CurrentDirectory;
-            string filePathWithFileName = System.IO.Path.Combine(filePath, "TreeJson.json");
 
-            if (File.Exists(filePathWithFileName))
-            {
-                LoadTreeFromJsonFile(filePathWithFileName);
-            }
 
             IPosition<ElementItem> treeRoot = PCTree.Root;
             InitializeComponent();
@@ -69,12 +63,24 @@ namespace FileExplorer
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // for showing Modal
-            OpenModal();
 
+            string filePath = Environment.CurrentDirectory;
+            string filePathWithFileName = System.IO.Path.Combine(filePath, "TreeJson.json");
 
-            // Specify the JSON file path
+            if (File.Exists(filePathWithFileName))
+            {
+                LoadTreeFromJsonFile(filePathWithFileName);
+                Model.TryNavigateWithTree(PCTree, PCTree.Root);
+            }
+            else
+            {
+                // for showing Modal
+                OpenModal();
+
+            }
+
             IPosition<ElementItem> treeRoot = PCTree.Root;
+            // Specify the JSON file path
 
 
             txtDir.Text = treeRoot.Element.Name;
@@ -153,7 +159,8 @@ namespace FileExplorer
 
             if (objectTree.Children != null)
             {
-                GeneralTree<ElementItem> tempTree = new GeneralTree<ElementItem>(new ElementItem("THIS PC"));
+
+                GeneralTree<ElementItem> tempTree = new GeneralTree<ElementItem>(objectTree.Element);
                 foreach (JsonTreeNode item in objectTree.Children)
                     ConvertJsonTreeToTree(tempTree, tempTree.Root, item.Element, item.Children);
                 PCTree = tempTree;
@@ -224,7 +231,7 @@ namespace FileExplorer
             if (createDataBase.Success)
             {
                 long targetSize = int.Parse(createDataBase.Input) * 1024; // 1KB
-                GeneralTree<ElementItem> tenpTree = new GeneralTree<ElementItem>(new ElementItem("THIS PC" , targetSize));
+                GeneralTree<ElementItem> tenpTree = new GeneralTree<ElementItem>(new ElementItem("THIS PC", targetSize));
                 PCTree = tenpTree;
                 Model.TryNavigateWithTree(PCTree, PCTree.Root);
             }
@@ -245,14 +252,14 @@ namespace FileExplorer
             long blankSpace = rootSize - partionsSize;
 
 
-            AddPartions addPartions = new AddPartions(this , blankSpace);
+            AddPartions addPartions = new AddPartions(this, blankSpace);
             addPartions.ShowDialog();
             if (addPartions.Success)
             {
                 long sizePart = long.Parse(addPartions.InputSize) * 1024;
                 string namePart = addPartions.InputName;
 
-                Model.AddPartion(namePart , sizePart);
+                Model.AddPartion(namePart, sizePart);
             }
         }
 
@@ -312,7 +319,7 @@ namespace FileExplorer
             Model.BtnNext_Click();
         }
 
-        private void addPartion_Click(object sender, RoutedEventArgs e)
+        private void AddPartion_Click(object sender, RoutedEventArgs e)
         {
 
             OpenPartionnModal();

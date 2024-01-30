@@ -254,7 +254,7 @@ namespace FileExplorer {
             this.addPartion = ((System.Windows.Controls.Button)(target));
             
             #line 93 "..\..\..\MainWindow.xaml"
-            this.addPartion.Click += new System.Windows.RoutedEventHandler(this.addPartion_Click);
+            this.addPartion.Click += new System.Windows.RoutedEventHandler(this.AddPartion_Click);
             
             #line default
             #line hidden

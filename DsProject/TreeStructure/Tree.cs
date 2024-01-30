@@ -228,18 +228,6 @@ namespace DsProject.TreeStructure
             Delete(p);
         }
 
-        public void Paste(IPosition<E> destination, IPosition<E> copiedNode)
-        {
-            Node destNode = Validate(destination);
-            Node copiedNodeNode = Validate(copiedNode);
-            Node newNode = CreateNode(copiedNodeNode.Element, destNode, new List<Node>());
-            destNode.Children.Add(newNode);
-
-            foreach (Node child in copiedNodeNode.Children)
-            {
-                CopySubtree(child, newNode);
-            }
-        }
 
         private long GetJsonSize(IPosition<E> position)
         {

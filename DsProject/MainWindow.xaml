@@ -90,7 +90,7 @@
                      HorizontalAlignment="Left" Margin="118,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225" Grid.Row="1" Grid.Column="1" Height="41"/>
             <Button Name="btnBack" Click="btnBack_Click" Content="back" HorizontalAlignment="Left" Margin="37,243,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.517,-0.107" Grid.Row="1" Grid.Column="1"/>
             <Button Name="btnNext" Click="btnNext_Click" Content="Next" HorizontalAlignment="Left" Margin="93,243,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.517,-0.107" Grid.Row="1" Grid.Column="1"/>
-            <Button Name="addPartion" Content="add Partion" Click="addPartion_Click" Margin="112,52,10,5"/>
+            <Button Name="addPartion" Content="add Partion" Click="AddPartion_Click" Margin="112,52,10,5"/>
             <Button x:Name="addFolder" Content="add Folder" Click="addFolder_Click" Margin="265,20,377,37" Grid.Column="1"/>
             <Button x:Name="delete" Click="delete_Click" Content="delete" Margin="477,20,194,37" Grid.Column="1"/>
             <Button x:Name="cut" Click="cut_Click" Content="cut" Margin="540,21,145,36" Grid.Column="1"/>

@@ -7,7 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 
 namespace FileExplorer.ViewModels
 {
@@ -46,7 +48,7 @@ namespace FileExplorer.ViewModels
 
         // file Explorer
         public ObservableCollection<FilesControl> FileItems { get; set; }
-                                     
+
 
 
         Stack<string> stackLastPrev = new Stack<string>();
@@ -299,25 +301,78 @@ namespace FileExplorer.ViewModels
 
         // copy past cut add file System
 
-        public void AddPartion(string namePartion , long size)
+        public void AddPartion(string namePartion, long size)
         {
-            PCtree.AddChild(PCtree.Root, new ElementItem(namePartion , size));
+            PCtree.AddChild(PCtree.Root, new ElementItem(namePartion, size));
             Refresh();
         }
 
 
         public void AddFolder(string nameFolder)
         {
-            if (ParentNode != PCtree.Root)
+            IPosition<ElementItem> partion = ParentNode;
+
+            while (partion.Element.Size == null)
+            {
+                partion = PCtree.Parent(partion);
+            }
+
+            int partionjson = System.Text.Encoding.UTF8.GetByteCount(ConvertTreeToJson(partion)) + System.Text.Encoding.UTF8.GetByteCount(nameFolder) + 64;
+
+            if (partionjson <= partion.Element.Size)
+            {
                 PCtree.AddChild(ParentNode, new ElementItem(nameFolder));
+            }
+            else
+            {
+                Window errorWindow = new Window
+                {
+                    Title = "Error",
+                    Content = "Partion is full",
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                };
+
+                // Show the window modally
+                Nullable<bool> dialogResult = errorWindow.ShowDialog();
+            }
+
+
+
             Refresh();
         }
 
 
         public void AddFile(ElementItem el)
         {
-            if (ParentNode != PCtree.Root)
-                PCtree.AddChild(ParentNode, el);
+
+            IPosition<ElementItem> partion = ParentNode;
+
+            while (partion.Element.Size == null)
+            {
+                partion = PCtree.Parent(partion);
+            }
+
+            int partionjson = System.Text.Encoding.UTF8.GetByteCount(ConvertTreeToJson(partion)) + 164;
+
+            if (partionjson <= partion.Element.Size)
+            {
+                if (ParentNode != PCtree.Root)
+                    PCtree.AddChild(ParentNode, el);
+            }
+            else
+            {
+                Window errorWindow = new Window
+                {
+                    Title = "Error",
+                    Content = "Partion is full",
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                };
+
+                // Show the window modally
+                Nullable<bool> dialogResult = errorWindow.ShowDialog();
+            }
+
+
             Refresh();
         }
 
@@ -389,15 +444,48 @@ namespace FileExplorer.ViewModels
 
         public void PasteItem()
         {
+
             if (CopyPosition != null)
             {
-                PCtree.Copy(CopyPosition, ParentNode);
+                if (HasEnoughSpace(ParentNode, CopyPosition))
+                {
+                    PCtree.Copy(CopyPosition, ParentNode);
+                }
+                else
+                {
+                    Window errorWindow = new Window
+                    {
+                        Title = "Error",
+                        Content = "Partion is full",
+                        SizeToContent = SizeToContent.WidthAndHeight,
+                    };
+
+                    // Show the window modally
+                    Nullable<bool> dialogResult = errorWindow.ShowDialog();
+                }
+
+
             }
             if (CutPosition != null)
             {
-                PCtree.Cut(CutPosition, ParentNode);
+                if (HasEnoughSpace(ParentNode, CutPosition))
+                {
+                    PCtree.Cut(CutPosition, ParentNode);
+                }
+                else
+                {
+                    Window errorWindow = new Window
+                    {
+                        Title = "Error",
+                        Content = "Partion is full",
+                        SizeToContent = SizeToContent.WidthAndHeight,
+                    };
+
+                    // Show the window modally
+                    Nullable<bool> dialogResult = errorWindow.ShowDialog();
+                }
             }
-            
+
 
 
             CopyPosition = null;
@@ -405,13 +493,72 @@ namespace FileExplorer.ViewModels
             Refresh();
         }
 
+        private bool HasEnoughSpace(IPosition<ElementItem> p, IPosition<ElementItem> targetPostion)
+        {
+            IPosition<ElementItem> partion = p;
+
+            while (partion.Element.Size == null)
+            {
+                partion = PCtree.Parent(partion);
+            }
+
+            string partionSize = ConvertTreeToJson(partion);
+
+            string targetSize = ConvertTreeToJson(targetPostion);
+
+            int fullSize = System.Text.Encoding.UTF8.GetByteCount(targetSize) + System.Text.Encoding.UTF8.GetByteCount(partionSize);
+
+            return fullSize <= partion.Element.Size;
+        }
+
+        private string ConvertTreeToJson(IPosition<ElementItem> node)
+        {
+            JsonTreeNode jsonTree = ConvertNodeToJson(node);
+
+
+            return System.Text.Json.JsonSerializer.Serialize(jsonTree);
+        }
+
+        private JsonTreeNode ConvertNodeToJson(IPosition<ElementItem> node)
+        {
+            IEnumerable<JsonTreeNode> arr = PCtree.Children(node).Select(child => ConvertNodeToJson(child));
+
+            return new JsonTreeNode { Element = node.Element, Children = arr };
+        }
+
         public void ImportFile()
         {
-            if (File != null && ParentNode != PCtree.Root)
+            IPosition<ElementItem> partion = ParentNode;
+
+            while (partion.Element.Size == null)
             {
-                PCtree.AddChild(ParentNode, File);
-                File = null;
+                partion = PCtree.Parent(partion);
             }
+
+            int partionjson = System.Text.Encoding.UTF8.GetByteCount(ConvertTreeToJson(partion)) + 164;
+
+            if (partionjson <= partion.Element.Size)
+            {
+                if (File != null && ParentNode != PCtree.Root)
+                {
+                    PCtree.AddChild(ParentNode, File);
+                    File = null;
+                }
+            }
+            else
+            {
+                Window errorWindow = new Window
+                {
+                    Title = "Error",
+                    Content = "Partion is full",
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                };
+
+                // Show the window modally
+                Nullable<bool> dialogResult = errorWindow.ShowDialog();
+            }
+
+
             Refresh();
         }
 
