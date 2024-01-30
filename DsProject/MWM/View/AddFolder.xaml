@@ -1,0 +1,20 @@
+﻿<Window x:Class="DsProject.MWM.View.AddFolder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DsProject.MWM.View"
+        mc:Ignorable="d"
+        Title="AddFolder" Height="100" Width="150"
+        WindowStyle="None"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        WindowStartupLocation="CenterOwner"
+        >
+    <Grid >
+        <TextBlock Text="name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtInput" TextChanged="txtInput_TextChanged" HorizontalAlignment="Left" Margin="10,36,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.125,-1.726"/>
+        <Button x:Name="btnCancel" Content="Cancel" Click="btnCancel_Click" HorizontalAlignment="Left" Margin="84,69,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnOk" Content="Ok"  Click="btnOk_Click" HorizontalAlignment="Left" Margin="19,69,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.488,0.534" Width="51"/>
+
+    </Grid>
+</Window>

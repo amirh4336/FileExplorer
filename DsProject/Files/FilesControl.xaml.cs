@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DsProject.TreeStructure;
+using System;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -20,6 +21,8 @@ namespace FileExplorer.Files
         /// </summary>
         public Action<FileModel> NavigateToPathCallback { get; set; }
 
+        public Action<FileModel> SelectedItemCallback { get; set; }
+
         public FilesControl()
         {
             InitializeComponent();
@@ -39,6 +42,13 @@ namespace FileExplorer.Files
                 e.ClickCount == 2)
             {
                 NavigateToPathCallback?.Invoke(File);
+            }
+
+            if (e.ChangedButton == MouseButton.Right &&
+                e.RightButton == MouseButtonState.Pressed &&
+                e.ClickCount == 1)
+            {
+                SelectedItemCallback?.Invoke(File);
             }
         }
 

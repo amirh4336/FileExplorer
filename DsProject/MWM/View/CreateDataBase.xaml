@@ -11,10 +11,10 @@
         Title="CreateDataBase" Height="150" Width="250">
     <Grid>
         <StackPanel VerticalAlignment="Center" >
+            <TextBlock Text="       Size(KB) :" />
             <TextBox x:Name="txtInput" Width="200" Height="40" Margin="5" TextChanged="txtInput_TextChanged"  />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-                <Button x:Name="btnOk" Content="Ok" Width="50" Height="40" Margin="2" Click="btnOk_Click" IsEnabled="False" />
-                <Button x:Name="btnCancel" Content="Cancel" Width="100" Height="40" Margin="2" Click="btnCancel_Click" />
+                <Button x:Name="btnOk" Content="Create Tree" Width="100" Height="40" Margin="2" Click="btnOk_Click" IsEnabled="False" />
             </StackPanel>
         </StackPanel>
     </Grid>

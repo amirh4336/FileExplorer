@@ -7,27 +7,39 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Files\FilesControlSystem.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MWM\View\AddFolder.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MWM\View\AddPartions.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="MWM\View\CreateDataBase.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="MWM\View\DiscoveryView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="MWM\View\HomeView.xaml.cs">
+    <Compile Update="MWM\View\CreateTextFile.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Files\FilesControlSystem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MWM\View\AddFolder.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MWM\View\AddPartions.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MWM\View\CreateDataBase.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MWM\View\DiscoveryView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="MWM\View\HomeView.xaml">
+    <Page Update="MWM\View\CreateTextFile.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Theme\MenuBottomTheme.xaml">

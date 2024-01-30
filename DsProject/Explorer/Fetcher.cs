@@ -95,24 +95,6 @@ namespace FileExplorer.Explorer
                     directories.Add(dModel);
                 }
 
-                // Checks for directory shortcuts
-                //foreach (string file in Directory.GetFiles(directory))
-                //{
-                //    if (Path.GetExtension(file) == ".lnk")
-                //    {
-                //        string realDirPath = ExplorerHelpers.GetShortcutTargetFolder(file);
-                //        FileInfo dInfo = new FileInfo(realDirPath);
-                //        FileModel dModel = new FileModel()
-                //        {
-                //            Icon = IconHelper.GetIconOfFile(realDirPath, true, true),
-                //            Name = dInfo.Name,
-                //            Path = dInfo.FullName,
-                //        };
-
-                //        directories.Add(dModel);
-                //    }
-                //}
-
                 return directories;
             }
 

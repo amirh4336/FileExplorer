@@ -48,7 +48,8 @@ namespace FileExplorer.MWM.View
 
         private void txtInput_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(txtInput.Text))
+
+            if (!string.IsNullOrEmpty(txtInput.Text) && Int32.TryParse(txtInput.Text, out int n))
             {
                 btnOk.IsEnabled = true;
             }

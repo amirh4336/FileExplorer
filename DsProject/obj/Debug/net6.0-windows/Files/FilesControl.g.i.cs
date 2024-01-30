@@ -54,7 +54,7 @@ namespace FileExplorer.Files {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/DsProject;V1.0.0.0;component/files/filescontrol.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/DsProject;component/files/filescontrol.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Files\FilesControl.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

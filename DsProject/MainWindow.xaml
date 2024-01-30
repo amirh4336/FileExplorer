@@ -57,25 +57,54 @@
             </Grid.RowDefinitions>
             <TextBlock Text="FileExplorer" FontFamily="/Fonts/#Poppins" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="22, 0 , 0 ,0" Foreground="White" FontSize="22" />
 
-            <StackPanel x:Name="dynamicVolumes" Grid.Row="1"></StackPanel>
-            <StackPanel Grid.Column="1"  VerticalAlignment="Center" Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBox x:Name="txtSearch"  Width="178" Height="40" VerticalContentAlignment="Center" Margin="5"  Style="{StaticResource ModernTextbox}" />
-                <Button x:Name="btnClose" Content="X" Width="32" Height="26" Margin="5" VerticalAlignment="Top" BorderBrush="Transparent" 
-                         Click="btnClose_Click" />
-            </StackPanel>
-            <Grid Grid.Column="1" Grid.Row="1" Margin="5" >
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" x:Name="dynamicFileSystem" >
+                </StackPanel>
+                <StackPanel Grid.Row="1" x:Name="dynamicVolumes"></StackPanel>
+            </Grid>
+            <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <ListBox Grid.Row="0" Margin="0 ,50, 0,0" Background="Transparent"
+                        HorizontalContentAlignment="Stretch" 
+                         ItemsSource="{Binding FileItemsSystem, UpdateSourceTrigger=PropertyChanged}"
+                         />
 
-                <ListBox Background="Transparent" ItemsSource="{Binding FileItems, UpdateSourceTrigger=PropertyChanged}"
-         HorizontalContentAlignment="Stretch" Margin="0,20,0,0"/>
+
+                    <ListBox Grid.Row="1" Margin="0 ,50, 0,0" Background="Transparent" ItemsSource="{Binding FileItems, UpdateSourceTrigger=PropertyChanged}"
+                            HorizontalContentAlignment="Stretch" />
+
+                </Grid>
             </Grid>
             <TextBox Name="txtDir" 
                      TextChanged="txtDir_TextChanged" 
                      Text="{Binding Path, UpdateSourceTrigger=PropertyChanged}"
                      Style="{StaticResource ModernTextbox}" 
-                     Grid.Column="1" 
-                     HorizontalAlignment="Left" Margin="77,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="225"/>
-            <Button Name="btnBack" Click="btnBack_Click" Grid.Column="1" Content="back" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" RenderTransformOrigin="-0.517,-0.107"/>
-            <Button Name="btnNext" Click="btnNext_Click" Grid.Column="1" Content="Next" HorizontalAlignment="Left" Margin="47,0,0,0" VerticalAlignment="Center" RenderTransformOrigin="-0.517,-0.107"/>
+                     HorizontalAlignment="Left" Margin="118,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225" Grid.Row="1" Grid.Column="1" Height="41"/>
+            <Button Name="btnBack" Click="btnBack_Click" Content="back" HorizontalAlignment="Left" Margin="37,243,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.517,-0.107" Grid.Row="1" Grid.Column="1"/>
+            <Button Name="btnNext" Click="btnNext_Click" Content="Next" HorizontalAlignment="Left" Margin="93,243,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.517,-0.107" Grid.Row="1" Grid.Column="1"/>
+            <Button Name="addPartion" Content="add Partion" Click="AddPartion_Click" Margin="112,52,10,5"/>
+            <Button x:Name="addFolder" Content="add Folder" Click="addFolder_Click" Margin="265,20,377,37" Grid.Column="1"/>
+            <Button x:Name="delete" Click="delete_Click" Content="delete" Margin="477,20,194,37" Grid.Column="1"/>
+            <Button x:Name="cut" Click="cut_Click" Content="cut" Margin="540,21,145,36" Grid.Column="1"/>
+            <Button x:Name="copy" Click="Copy_Click" Content="copy" Margin="588,20,97,37" Grid.Column="1"/>
+            <Button x:Name="paste" Click="paste_Click" Content="paste"  Margin="637,20,48,37" Grid.Column="1"/>
+            <Button Grid.Column="1" x:Name="btnClose" Width="32" Height="26" Content="X" HorizontalAlignment="Left" Margin="683,3,0,0" VerticalAlignment="Top" Click="btnClose_Click"/>
+            <TextBox x:Name="txtDirFileSystem" 
+                Text="{Binding PathSys, UpdateSourceTrigger=PropertyChanged}"
+                Style="{StaticResource ModernTextbox}" 
+                HorizontalAlignment="Left" Margin="35,7,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="225" Grid.Column="1" Height="42"/>
+            <Button x:Name="btnBackFileSystem" Click="btnBackFileSystem_Click" Content="back" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.517,-0.107" Grid.Column="1"/>
+            <Button x:Name="AddFileTxt" Content="add File txt" Click="AddFileTxt_Click" Margin="365,32,256,25" Grid.Column="1"/>
+            <Button x:Name="ImportFile" Content="import file" Click="ImportFile_Click" Margin="365,9,256,48" Grid.Column="1"/>
+            <Button x:Name="ImportTree" Content="import Tree" Click="ImportTree_Click" Margin="10,52,112,5"/>
         </Grid>
 
     </Border>
